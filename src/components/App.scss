@@ -1,5 +1,21 @@
-$myColor: red;
+$menuColor: #1BB14C;
 
-h1 {
-  color: $myColor;
+html, body, #app, #app>div {
+  height: 100%;
+  background: #ffffff;
+}
+bg{
+  background: $menuColor;
+}
+.menu{
+  background-color: #1BB14C !important;
+  button{
+    color: white;
+  }
+  .toolbar{
+    height: 130px;
+  }
+  .login{
+    margin-left: 60%;
+  }
 }

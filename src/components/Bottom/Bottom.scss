@@ -1,0 +1,26 @@
+.footer{
+  height: 350px;
+  background-color: #444444;
+  color: white;
+  text-align: center;
+
+  .social-area{
+    display: inline-block;
+    width: 100%;
+    margin-top: 5%;
+    li {
+      margin: 75px 30px;
+      display: inline-block;
+    }
+  }
+  .privacy-area{
+      a{
+        color: white;
+        text-decoration: none;
+        &:hover{
+          color: white;
+          text-decoration: underline;
+        }
+      }
+    }
+}
