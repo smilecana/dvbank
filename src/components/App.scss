@@ -1,14 +1,18 @@
 $menuColor: #1BB14C;
-
+$drawerWidth: 250px;
 html, body, #app, #app>div {
   height: 100%;
-  background: #ffffff;
+  background: rgba(247, 247, 247, 0.99);
 }
 bg{
   background: $menuColor;
 }
+a{
+  text-decoration: none;
+}
 .menu{
   background-color: #1BB14C !important;
+  z-index:1400 !important;
   button{
     color: white;
   }
@@ -18,4 +22,10 @@ bg{
   .login{
     margin-left: 60%;
   }
+  position: absolute;
+  width: calc(100% - 250px);
+
+}
+.register-wrap{
+  margin: 7% 5%;
 }

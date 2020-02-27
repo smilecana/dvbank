@@ -1,16 +1,23 @@
 import React from 'react';
 import './Bottom.scss';
 import {Container, Grid} from "@material-ui/core";
+import FacebookIcon from '@material-ui/icons/Facebook';
+import TwitterIcon from '@material-ui/icons/Twitter';
+import InstagramIcon from '@material-ui/icons/Instagram';
+import YouTubeIcon from '@material-ui/icons/YouTube';
+import LinkedInIcon from '@material-ui/icons/LinkedIn';
+
+
 export default function Bottom() {
     return (
         <div className='footer'>
             <Container>
                 <ul className='social-area'>
-                    <li>FaceBook</li>
-                    <li>Twitter</li>
-                    <li>Instagram</li>
-                    <li>Youtube</li>
-                    <li>LinkedIn</li>
+                    <li><a href="#"><FacebookIcon/></a></li>
+                    <li><a href="#"><TwitterIcon/></a></li>
+                    <li><a href="#"><InstagramIcon/></a></li>
+                    <li><a href="#"><YouTubeIcon/></a></li>
+                    <li><a href="#"><LinkedInIcon/></a></li>
                 </ul>
                 <Grid container spacing={1} className="privacy-area">
                     <Grid item xs>
