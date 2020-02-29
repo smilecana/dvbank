@@ -11,14 +11,19 @@ import Home from '../components/Home/Home';
 import Register from '../components/Register/Register';
 import Bottom from '../components/Bottom/Bottom';
 import Login from '../components/Login/Login'
+import UserMenu from "./UserMenu/UserMenu";
 import {Container, Toolbar, Typography, Button} from "@material-ui/core";
+
 
 export default function App() {
     return (
             <Router>
-                <AppBar position="static" className='menu'>
+                <AppBar position="fixed" className='menu'>
                     <Container>
                         <Toolbar>
+                            <Typography variant="h6"  align="left">
+                                <Link to="/usermenu"><Button>UserMenu</Button></Link>
+                            </Typography>
                             <Typography variant="h6"  align="left">
                                 <Link to="/products"><Button>Products</Button></Link>
                             </Typography>
@@ -38,6 +43,9 @@ export default function App() {
                     </Container>
                 </AppBar>
                 <Switch>
+                    <Route path="/usermenu">
+                        <UserMenu/>
+                    </Route>
                     <Route path="/products">
                         <Home/>
                     </Route>
@@ -49,7 +57,9 @@ export default function App() {
                         <Login/>
                     </Route>
                     <Route path="/register">
-                        <Register/>
+                        <div className="register-wrap">
+                            <Register/>
+                        </div>
                     </Route>
                     <Route path="/">
                         <Home/>

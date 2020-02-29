@@ -3,14 +3,25 @@
   background-color: #444444;
   color: white;
   text-align: center;
-
+  z-index:1400 ;
+  transform: translateZ(0);
+  width: 100%;
   .social-area{
     display: inline-block;
-    width: 100%;
     margin-top: 5%;
+    padding: 0;
     li {
       margin: 75px 30px;
       display: inline-block;
+      a{
+        color: #ffffff;
+        &:hover{
+          color: #ffffff;
+        }
+      }
+      svg{
+        font-size: 2em;
+      }
     }
   }
   .privacy-area{
