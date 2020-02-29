@@ -10,6 +10,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Home from '../components/Home/Home';
 import Register from '../components/Register/Register';
 import Bottom from '../components/Bottom/Bottom';
+import Login from '../components/Login/Login'
 import {Container, Toolbar, Typography, Button} from "@material-ui/core";
 
 export default function App() {
@@ -45,6 +46,7 @@ export default function App() {
                     <Route path="/faq">
                     </Route>
                     <Route path="/signIn">
+                        <Login/>
                     </Route>
                     <Route path="/register">
                         <Register/>
