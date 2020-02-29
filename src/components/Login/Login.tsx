@@ -34,7 +34,8 @@ const useStyles = makeStyles(theme => ({
 export default function Login() {
 
     const classes = useStyles();
-    return (<div className="outsideBox">
+    return (
+    <div className="outsideBox">
         <Grid container spacing={3}>
             <Grid item xs={5}>
                 <Paper className="classes.paper">xs=12</Paper>
