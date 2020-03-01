@@ -10,9 +10,13 @@ import AppBar from '@material-ui/core/AppBar';
 import Home from '../components/Home/Home';
 import Register from '../components/Register/Register';
 import Bottom from '../components/Bottom/Bottom';
+<<<<<<< HEAD
 import Login from '../components/Login/Login'
 import UserMenu from "./UserMenu/UserMenu";
+=======
+>>>>>>> 3733b8c2ab6501938f3e7861310dab42661d168b
 import {Container, Toolbar, Typography, Button} from "@material-ui/core";
+import UserDetail from "./UserDetail/UserDetail";
 
 
 export default function App() {
@@ -44,7 +48,7 @@ export default function App() {
                 </AppBar>
                 <Switch>
                     <Route path="/usermenu">
-                        <UserMenu/>
+                        <UserDetail/>
                     </Route>
                     <Route path="/products">
                         <Home/>

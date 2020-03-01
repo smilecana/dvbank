@@ -1,6 +1,6 @@
 import React from 'react';
 import './Bottom.scss';
-import {Container, Grid} from "@material-ui/core";
+import {Box, Container, Grid} from "@material-ui/core";
 import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import InstagramIcon from '@material-ui/icons/Instagram';
