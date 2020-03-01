@@ -15,6 +15,7 @@ import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import PaymentIcon from '@material-ui/icons/Payment';
 import SendIcon from '@material-ui/icons/Send';
 import {Link} from "@material-ui/core";
+import Summary from "../AccountSummary/summary";
 
 const theme = createMuiTheme({
     palette: {
@@ -104,7 +105,7 @@ export default function ClippedDrawer() {
                 </Drawer>
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
-
+                    <Summary />
                 </main>
             </ThemeProvider>
         </div>
