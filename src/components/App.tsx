@@ -12,6 +12,10 @@ import Event from '../components/Basic/Event/Event'
 import Faq from '../components/Basic/Faq/Faq'
 import Register from '../components/Register/Register';
 import Bottom from '../components/Bottom/Bottom';
+
+import Login from '../components/Login/Login'
+// import UserMenu from "./UserMenu/UserMenu";
+
 import {Container, Toolbar, Typography, Button} from "@material-ui/core";
 import UserDetail from "./UserDetail/UserDetail";
 import Product from "./Basic/Products/Product";
@@ -58,6 +62,7 @@ export default function App() {
                         <Faq/>
                     </Route>
                     <Route path="/signIn">
+                        <Login/>
                     </Route>
                     <Route path="/register">
                         <div className="register-wrap">

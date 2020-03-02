@@ -14,6 +14,8 @@ import HomeIcon from '@material-ui/icons/Home';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import PaymentIcon from '@material-ui/icons/Payment';
 import SendIcon from '@material-ui/icons/Send';
+import {Link} from "@material-ui/core";
+import Summary from "../AccountSummary/summary";
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import {Collapse} from "@material-ui/core";
@@ -138,12 +140,11 @@ export default function ClippedDrawer() {
                             <ListItemText primary='Bill Payment'/>
                         </ListItem>
                     </List>
-
                     <Divider />
                 </Drawer>
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
-
+                    <Summary />
                 </main>
             </ThemeProvider>
         </div>
