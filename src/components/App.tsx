@@ -8,10 +8,13 @@ import {
 import './App.scss';
 import AppBar from '@material-ui/core/AppBar';
 import Home from '../components/Home/Home';
+import Event from '../components/Basic/Event/Event'
+import Faq from '../components/Basic/Faq/Faq'
 import Register from '../components/Register/Register';
 import Bottom from '../components/Bottom/Bottom';
 import {Container, Toolbar, Typography, Button} from "@material-ui/core";
 import UserDetail from "./UserDetail/UserDetail";
+import Product from "./Basic/Products/Product";
 
 
 export default function App() {
@@ -21,9 +24,6 @@ export default function App() {
                     <Container>
                         <Toolbar>
                             <Typography variant="h6"  align="left">
-                                <Link to="/usermenu"><Button>UserMenu</Button></Link>
-                            </Typography>
-                            <Typography variant="h6"  align="left">
                                 <Link to="/products"><Button>Products</Button></Link>
                             </Typography>
                             <Typography variant="h6"  align="left" >
@@ -31,6 +31,9 @@ export default function App() {
                             </Typography>
                             <Typography variant="h6" align="left">
                                 <Link to="/faq"><Button>FAQ</Button></Link>
+                            </Typography>
+                            <Typography variant="h6"  align="left">
+                                <Link to="/usermenu"><Button>UserMenu</Button></Link>
                             </Typography>
                             <Typography variant="h6" align="right" className='login'>
                                 <Link to="/signIn"><Button>SignIn</Button></Link>
@@ -46,11 +49,13 @@ export default function App() {
                         <UserDetail/>
                     </Route>
                     <Route path="/products">
-                        <Home/>
+                        <Product/>
                     </Route>
                     <Route path="/event">
+                        <Event/>
                     </Route>
                     <Route path="/faq">
+                        <Faq/>
                     </Route>
                     <Route path="/signIn">
                     </Route>

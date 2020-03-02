@@ -14,7 +14,10 @@ import HomeIcon from '@material-ui/icons/Home';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import PaymentIcon from '@material-ui/icons/Payment';
 import SendIcon from '@material-ui/icons/Send';
-import {Link} from "@material-ui/core";
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import {Collapse} from "@material-ui/core";
+import {StarBorder} from "@material-ui/icons";
 
 const theme = createMuiTheme({
     palette: {
@@ -52,11 +55,20 @@ const useStyles = makeStyles((theme: Theme) =>
             padding: theme.spacing(3),
         },
         toolbar: theme.mixins.toolbar,
+        nested: {
+            paddingLeft: theme.spacing(4),
+        },
     }),
 );
 
 export default function ClippedDrawer() {
     const classes = useStyles();
+
+    const [open, setOpen] = React.useState(true);
+
+    const handleClick = () => {
+        setOpen(!open);
+    };
     return (
         <div className={classes.root}>
             <ThemeProvider theme={theme}>
@@ -87,19 +99,46 @@ export default function ClippedDrawer() {
                     </List>
                     <Divider />
                     <List>
-                        <ListItem button key='Accounts'>
-                            <ListItemIcon><AccountBalanceIcon/></ListItemIcon>
-                            <ListItemText primary='Accounts'/>
+                        <ListItem button onClick={handleClick}>
+                            <ListItemIcon>
+                                <AccountBalanceIcon/>
+                            </ListItemIcon>
+                            <ListItemText primary="Accounts" />
+                            {open ? <ExpandLess /> : <ExpandMore />}
                         </ListItem>
-                        <ListItem button key='Transfers'>
-                            <ListItemIcon><SendIcon/></ListItemIcon>
-                            <ListItemText primary='Transfers'/>
+                        <Collapse in={open} timeout="auto" unmountOnExit>
+                            <List component="div" disablePadding>
+                                <ListItem button className={classes.nested}>
+                                    <ListItemIcon>
+                                        <StarBorder />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Starred" />
+                                </ListItem>
+                            </List>
+                        </Collapse>
+                        <ListItem button onClick={handleClick}>
+                            <ListItemIcon>
+                                <AccountBalanceIcon/>
+                            </ListItemIcon>
+                            <ListItemText primary="Transfers" />
+                            {open ? <ExpandLess /> : <ExpandMore />}
                         </ListItem>
+                        <Collapse in={open} timeout="auto" unmountOnExit>
+                            <List component="div" disablePadding>
+                                <ListItem button className={classes.nested}>
+                                    <ListItemIcon>
+                                        <StarBorder />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Starred" />
+                                </ListItem>
+                            </List>
+                        </Collapse>
                         <ListItem button key='Bill Payment'>
                             <ListItemIcon><PaymentIcon/></ListItemIcon>
                             <ListItemText primary='Bill Payment'/>
                         </ListItem>
                     </List>
+
                     <Divider />
                 </Drawer>
                 <main className={classes.content}>
