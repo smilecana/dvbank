@@ -1,11 +1,10 @@
 import React from 'react';
 import {Button, Container, Grid, Typography} from "@material-ui/core";
 import {createMuiTheme, makeStyles, ThemeProvider} from '@material-ui/core/styles';
-import './Product.scss';
 import StarsIcon from '@material-ui/icons/Stars';
 import PermPhoneMsgIcon from '@material-ui/icons/PermPhoneMsg';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
-import CustomizedTables from "../Elemt/CustomizedTables";
+import CustomizedTables from "./Elemt/CustomizedTables";
 
 const theme = createMuiTheme({
     palette: {
