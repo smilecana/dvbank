@@ -20,6 +20,8 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import {Collapse} from "@material-ui/core";
 import {StarBorder} from "@material-ui/icons";
+import AccountDetail from '../AccountSummary/accountDetail';
+import SimpleSelect from '../AccountSummary/test';
 
 const theme = createMuiTheme({
     palette: {
@@ -144,7 +146,9 @@ export default function ClippedDrawer() {
                 </Drawer>
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
-                    <Summary />
+                    {/* <Summary /> */}
+                    <AccountDetail />
+                    <SimpleSelect />
                 </main>
             </ThemeProvider>
         </div>
