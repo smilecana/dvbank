@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Component } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from "@material-ui/core/Grid";
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -23,12 +22,15 @@ const theme = createMuiTheme({
 });
 
 const useStyles = makeStyles(theme => ({
+    root:{
+
+    },
     main: {
         border: '1px solid #eee',
         borderRadius: '5px',
         boxShadow: '5px 7px 16px #f0f0f0',
         backgroundColor: '#ffffff',
-        margin: theme.spacing(10)
+        margin:'10% auto'
     },
     paper: {
         marginTop: theme.spacing(5),
@@ -58,13 +60,11 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-// class Login extends React.Component<LoginProps, LoginState> {
 
 export default function Login() {
 
     const classes = useStyles();
     return (
-        <div className="outsideBox" >
             <ThemeProvider theme={theme} >
                 <Container className={classes.main} component="main" maxWidth="md" >
                     <CssBaseline />
@@ -157,7 +157,6 @@ export default function Login() {
                     </Grid>
                 </Container>
             </ThemeProvider>
-        </div>
     );
 
 }

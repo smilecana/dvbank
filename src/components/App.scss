@@ -1,7 +1,6 @@
 $menuColor: #1BB14C;
 $drawerWidth: 250px;
 html, body, #app, #app>div {
-  height: 100%;
   background: rgba(247, 247, 247, 0.99);
 }
 bg{
@@ -23,7 +22,7 @@ a{
   }
   position: absolute;
   width: calc(100% - 250px);
-
+  z-index: 1500 !important;
 }
 .register-wrap{
   margin: 7% 5%;

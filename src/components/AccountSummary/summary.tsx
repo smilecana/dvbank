@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Link from '@material-ui/core/Link';
-import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import {makeStyles, createMuiTheme, ThemeProvider, Theme, createStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { Typography, Button, Divider } from '@material-ui/core';
+import {Typography, Button, Divider, Container} from '@material-ui/core';
 
 
 // Generate Order Data
@@ -43,7 +43,10 @@ const useStyles = makeStyles(theme => ({
     },
     fBold: {
         fontWeight: 'bold'
-    }
+    },
+    nested: {
+        paddingLeft: theme.spacing(4),
+    },
     
 }));
 
@@ -60,12 +63,11 @@ const theme = createMuiTheme({
         },
     },
 });
-
 export default function Summary() {
     const classes = useStyles();
 
     return (
-        <React.Fragment>
+        <Container className={classes.nested}>
             <ThemeProvider theme={theme} >
             <div>
             
@@ -164,6 +166,6 @@ export default function Summary() {
             </div>
 
             </ThemeProvider>
-        </React.Fragment>
+        </Container>
     )
 }

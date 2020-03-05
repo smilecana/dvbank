@@ -2,8 +2,7 @@ import React from 'react';
 import Box from '@material-ui/core/Box';
 import {Button, ButtonGroup, Container} from "@material-ui/core";
 import {createMuiTheme, makeStyles, ThemeProvider} from '@material-ui/core/styles';
-import CustomizedExpansionPanels from "../Elemt/Expasion";
-import './Faq.scss';
+import CustomizedExpansionPanels from "./Elemt/Expasion";
 
 const theme = createMuiTheme({
     palette: {
@@ -22,6 +21,8 @@ const theme = createMuiTheme({
 const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
+        minHeight: '950px',
+        paddingTop: '5%'
     },
     view:{
         marginTop:'50px'
@@ -40,7 +41,7 @@ export default function Faq() {
     const classes = useStyles();
 
     return (
-        <Container component="main" className='faq-wrap' maxWidth="lg">
+        <Container component="main" className={classes.root} maxWidth="lg">
             <ThemeProvider theme={theme}>
                 <Box className={classes.btnGroup}>
                     <ButtonGroup color="primary" aria-label="outlined primary button group">

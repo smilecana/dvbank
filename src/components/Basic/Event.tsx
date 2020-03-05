@@ -6,8 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import {Container, Grid} from "@material-ui/core";
 import {createMuiTheme, makeStyles, ThemeProvider} from '@material-ui/core/styles';
-import MediaCard from '../Elemt/Media';
-import './Event.scss';
+import MediaCard from './Elemt/Media';
 
 interface TabPanelProps {
     children?: React.ReactNode;
