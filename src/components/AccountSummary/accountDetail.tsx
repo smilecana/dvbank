@@ -6,7 +6,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { Typography } from '@material-ui/core';
+import { Typography, Container } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -72,6 +72,11 @@ const useStyles = makeStyles(theme => ({
     table: {
         minWidth: 650,
       },
+    root: {
+        flexGrow: 1,
+        height: 'auto',
+        paddingTop: '10%'
+    },
 
 
 }));
@@ -107,7 +112,7 @@ export default function AccountDetail() {
 
     return (
         <React.Fragment>
-
+            <Container className={classes.root} maxWidth="lg" >
             <ThemeProvider theme={theme} >
 
                 <FormControl variant="outlined" className={classes.formControl}>
@@ -156,6 +161,7 @@ export default function AccountDetail() {
                 </div>
                 
             </ThemeProvider>
+            </Container>
         </React.Fragment>
     )
 }

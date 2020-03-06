@@ -1,6 +1,6 @@
 import React from "react";
 import {
-    BrowserRouter as Router,
+    BrowserRouter ,
     Switch,
     Route,
     Link,
@@ -15,14 +15,20 @@ import Register from '../components/Register/Register';
 import Bottom from '../components/Bottom/Bottom';
 import Login from '../components/Login/Login'
 import {Container, Toolbar, Typography, Button} from "@material-ui/core";
-import Summary from "./AccountSummary/summary";
+import AccountSummary from "./AccountSummary/accountSummary";
+import AccountDetail from "./AccountSummary/accountDetail";
 import SideBar from "./SideBar/SideBar";
+import { store } from './store';
+import { useStore } from 'react-stores';
+import { Nav } from './Nav';
 
 export default function App() {
-    const login: boolean = true;
+    const login: boolean = false;
+    const authStoreState = useStore(store);
     return (
-        <Router>
-            <AppBar position="fixed" className='menu'>
+        <BrowserRouter>
+            <Nav />
+            {/* <AppBar position="fixed" className='menu'>
                 <Container>
                     <Toolbar>
                         <Typography variant="h6" align="left">
@@ -43,23 +49,24 @@ export default function App() {
                     </Toolbar>
                 </Container>
             </AppBar>
-            {(login) ? (<SideBar/>) : ''}
+            {(login) ? (<SideBar/>) : ''} */}
             <Switch>
-                <Route path="/products" component={Product}/>
-                <Route path="/event" component={Event}/>
-                <Route path="/faq" component={Faq}/>
-                <Route path="/signIn">
+                <Route exact path="/products" component={Product}/>
+                <Route exact path="/event" component={Event}/>
+                <Route exact path="/faq" component={Faq}/>
+                <Route exact path="/signIn">
                     <Login/>
                 </Route>
                 <Route path="/register">
                     <Register/>
                 </Route>
-                <Route path="/accounts/summary" component={Summary}/>
+                <Route path="/accounts/summary" component={AccountSummary}/>
+                <Route path="/accounts/details" component={AccountDetail}/>
                 <Route path="/">
                     <Home/>
                 </Route>
             </Switch>
             <Bottom/>
-        </Router>
+        </BrowserRouter>
     );
 }

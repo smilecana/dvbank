@@ -63,7 +63,7 @@ const theme = createMuiTheme({
         },
     },
 });
-export default function Summary() {
+export default function AccountSummary() {
     const classes = useStyles();
 
     return (

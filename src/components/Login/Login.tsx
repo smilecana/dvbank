@@ -3,9 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from "@material-ui/core/Grid";
 import { ThemeProvider } from '@material-ui/core/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
-
+import  { useState } from 'react';
 import './Login.scss';
 import { CssBaseline, Container, Typography, TextField, Button, Link, Divider } from '@material-ui/core';
+import { login, logout } from '../authActions';
+
 
 const theme = createMuiTheme({
     palette: {
@@ -61,10 +63,49 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-export default function Login() {
 
-    const classes = useStyles();
-    return (
+
+export default function Login() {
+    // check login or not
+   
+    //set state in hook function
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleSubmit = (e:any) => {
+        e.preventDefault();
+        if(email === "user" && password === "test")
+          {
+            login();
+            console.log("success login");
+            window.location.href = "/";
+          }
+    }
+
+
+    // state = {
+    //     email: "",
+    //     password: "",
+        
+    //   };
+    
+    //   handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    //     // No longer need to cast to any - hooray for react!
+    //     this.setState({[e.target.name]: e.target.value});
+    //   }
+
+    //   submit(){
+    //       if(this.state.email == "user" && this.state.password == "password")
+    //       {
+    //         // login();
+    //         console.log("success login")
+    //       }
+    //   }
+
+
+    // render(){
+        const classes = useStyles();
+        return (
             <ThemeProvider theme={theme} >
                 <Container className={classes.main} component="main" maxWidth="md" >
                     <CssBaseline />
@@ -74,7 +115,7 @@ export default function Login() {
                                 <Typography component="h3" variant="h5" className={classes.title}>
                                     Sign in to Online Banking
                                 </Typography>
-                                <form className={classes.form} noValidate>
+                                <form className={classes.form} noValidate onSubmit={handleSubmit}>
                                     <TextField
                                         variant="outlined"
                                         margin="normal"
@@ -84,6 +125,8 @@ export default function Login() {
                                         label="Online ID"
                                         name="email"
                                         autoComplete="email"
+                                        value={email}
+                                        onChange={e => setEmail(e.target.value)}
                                         autoFocus
                                     />
                                     <TextField
@@ -95,6 +138,8 @@ export default function Login() {
                                         label="Password"
                                         type="password"
                                         id="password"
+                                        value={password}
+                                        onChange={e => setPassword(e.target.value)}
                                         autoComplete="current-password"
                                     />
 
@@ -113,6 +158,7 @@ export default function Login() {
                                         variant="contained"
                                         color="primary"
                                         className={classes.submit}
+                                        // onClick={this.submit}
                                     >
                                         Sign In
                                     </Button>
@@ -158,7 +204,7 @@ export default function Login() {
                 </Container>
             </ThemeProvider>
     );
-
+    // }
 }
 
 // export default Login;
