@@ -78,7 +78,7 @@ export default function Login() {
           {
             login();
             console.log("success login");
-            window.location.href = "/";
+            window.location.href = "/accounts/summary";
           }
     }
 

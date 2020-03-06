@@ -49,7 +49,7 @@ export const Nav: React.FC = () => {
                         
                     </Toolbar>
                 </Container>
-                {/* <SideBar/> */}
+                <SideBar/>
             </AppBar>
             
     )

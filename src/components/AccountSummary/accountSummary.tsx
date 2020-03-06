@@ -7,7 +7,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import {Typography, Button, Divider, Container} from '@material-ui/core';
-
+import { useProtectedPath } from "../useProtectedPath";
+import { Redirect } from "react-router";
 
 // Generate Order Data
 function createData(id: number, Account: string, Balance: number) {
@@ -65,8 +66,14 @@ const theme = createMuiTheme({
 });
 export default function AccountSummary() {
     const classes = useStyles();
+    const accessGrant = useProtectedPath();
+    console.log(accessGrant)
+    if (!accessGrant) {
+        return <Redirect to="/signIn" />;
+      }
 
     return (
+        
         <Container className={classes.nested}>
             <ThemeProvider theme={theme} >
             <div>

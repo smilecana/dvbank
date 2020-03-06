@@ -9,6 +9,8 @@ import {Collapse, Container, Divider, Icon} from "@material-ui/core";
 import ListItemText from "@material-ui/core/ListItemText";
 import data from "../../store/data";
 import {ExpandLess, ExpandMore} from "@material-ui/icons";
+import { useProtectedPath } from "../useProtectedPath";
+import { Redirect } from "react-router";
 
 const theme = createMuiTheme({
     palette: {
@@ -40,6 +42,11 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 export default function SideBar() {
     const classes = useStyles();
+    const accessGrant = useProtectedPath();
+
+    if (!accessGrant) {
+      return <Redirect to="/signIn" />;
+    }
     return (
         <Container className={classes.root}>
             <Drawer
