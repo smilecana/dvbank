@@ -21,6 +21,7 @@ import SideBar from "./SideBar/SideBar";
 import { store } from './store';
 import { useStore } from 'react-stores';
 import { Nav } from './Nav';
+import AccountTransfer from "./AccountSummary/transfer";
 
 export default function App() {
     const login: boolean = false;
@@ -62,6 +63,7 @@ export default function App() {
                 </Route>
                 <Route path="/accounts/summary" component={AccountSummary}/>
                 <Route path="/accounts/details" component={AccountDetail}/>
+                <Route path="/accounts/transfer" component={AccountTransfer}/>
                 <Route path="/">
                     <Home/>
                 </Route>
