@@ -1,11 +1,11 @@
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import {Container, Grid} from "@material-ui/core";
-import {createMuiTheme, makeStyles, ThemeProvider} from '@material-ui/core/styles';
+import {makeStyles, ThemeProvider} from '@material-ui/core/styles';
+import {dvTheme} from "../../constants/theme";
 import MediaCard from './Elemt/Media';
 
 interface TabPanelProps {
@@ -14,23 +14,11 @@ interface TabPanelProps {
     value: any;
 }
 
-const theme = createMuiTheme({
-    palette: {
-        primary: {
-            light: '#5ee279',
-            main: 'rgba(247, 247, 247, 0.99)',
-            dark: '#007e1d',
-            contrastText: '#444',
-        },
-        secondary: {
-            main: '#1bb14c',
-        },
-    },
-
-});
+const theme = dvTheme;
 const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
+        minHeight:'693px',
         height: 'auto',
         paddingTop: '5%'
     },

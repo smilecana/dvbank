@@ -9,26 +9,13 @@ import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {ThemeProvider} from '@material-ui/core/styles';
-import {createMuiTheme} from '@material-ui/core/styles';
 
-import './Register.scss';
+import {dvTheme} from "../constants/theme";
 
-const theme = createMuiTheme({
-    palette: {
-        primary: {
-            light: '#5ee279',
-            main: '#1aaf4b',
-            dark: '#007e1d',
-            contrastText: '#fff',
-        },
-        secondary: {
-            main: '#1bb14c',
-        },
-    },
-});
+const theme = dvTheme;
 const useStyles = makeStyles(theme => ({
     main: {
-        margin: '8% auto 0 auto',
+        margin: '8% auto',
         border: '1px solid #eee',
         borderRadius: '5px',
         boxShadow: '5px 7px 16px #f0f0f0',
@@ -56,14 +43,28 @@ const useStyles = makeStyles(theme => ({
         color: '#444444',
         fontSize: '0.8rem',
     },
+    infoWrap:{
+        padding: '8%',
+        '& hr':{
+            width: '70%',
+            textAlign:'left'
+        },
+        '& p':{
+            height:'auto',
+            fontSize:'0.8em',
+            color:'#444',
+            lineHeight:'23px'
+        }
+    },
     info:{
-        margin: '2% auto 1% auto',
+        margin: '2% auto 4% auto',
     }
 }));
 
 export default function Register() {
     const classes = useStyles();
-    return (<>
+    return (
+        <>
             <Container component="main" className={classes.main} maxWidth='md'>
                 <ThemeProvider theme={theme}>
                     <Grid container spacing={1}>
@@ -167,7 +168,7 @@ export default function Register() {
                             </form>
                         </Grid>
                         <Grid item xs={6}>
-                            <div className="info-wrap">
+                            <div className={classes.infoWrap}>
                                 <Typography variant="subtitle1" className={classes.typography}>
                                     Ready for better banking?
                                 </Typography>
@@ -192,13 +193,6 @@ export default function Register() {
                         </Grid>
                     </Grid>
                 </ThemeProvider>
-            </Container>
-            <Container maxWidth='md' className={classes.info}>
-                <p className={classes.imif}>*Lorem Ipsum is simply dummy text of the printing and typesetting
-                    industry.</p>
-                <p className={classes.imif}>**Lorem Ipsum has been the industry's standard dummy text ever since the
-                    1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen
-                    book.</p>
             </Container>
         </>
     );
