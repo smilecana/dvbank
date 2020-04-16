@@ -16,9 +16,10 @@ import Login from './Login'
 import AccountSummary from "./AccountSummary/accountSummary";
 import AccountDetail from "./AccountSummary/accountDetail";
 import { store } from './store';
-import { useStore } from 'react-stores';
-import { Nav } from './Nav';
+// import { Nav } from './Nav';
 import AccountTransfer from "./AccountSummary/transfer";
+import SideBar from "./Menus/SideBar";
+import { MainBar } from "./Menus/MainBar";
 
 export default function App() {
     const authStoreState = useStore(store);
@@ -38,7 +39,7 @@ export default function App() {
                 <Route exact path="/signIn">
                     <Login/>
                 </Route>
-                <Route path="/user/:userId" component={UserDetail}/>
+                {/* <Route path="/user/:userId" component={UserDetail}/> */}
                 <Route path="/register" component={Register}/>
                 <Route path="/accounts/summary" component={AccountSummary}/>
                 <Route path="/accounts/details" component={AccountDetail}/>

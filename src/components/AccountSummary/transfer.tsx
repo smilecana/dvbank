@@ -66,6 +66,9 @@ const useStyles = makeStyles(theme => ({
     subDetailContent: {
         fontWeight: "bold",
         padding: "0px 10px",
+    },
+    margin: {
+        
     }
 
 }));
@@ -143,7 +146,7 @@ export default function AccountTransfer() {
                             labelId="demo-simple-select-outlined-label"
                             id="demo-simple-select-outlined"
                             value={account}
-                            onChange={handleChange}
+                            // onChange={handleChange}
                             labelWidth={labelWidth}
                         >
                             <MenuItem value={40} >Chequing(00-33-99-00)$1000.99</MenuItem>
