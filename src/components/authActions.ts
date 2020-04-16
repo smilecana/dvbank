@@ -8,8 +8,6 @@ export function login() {
 }
 
 export function logout() {
-    
-    
     store.setState({
     authorized: false
   });

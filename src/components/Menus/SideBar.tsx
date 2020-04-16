@@ -1,5 +1,6 @@
-import React from 'react';
-import {createMuiTheme, createStyles, makeStyles, Theme} from '@material-ui/core/styles';
+import React, {useState} from 'react';
+import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
+import clsx from 'clsx';
 import {Link} from "react-router-dom";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
@@ -7,24 +8,11 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import {Collapse, Container, Divider, Icon} from "@material-ui/core";
 import ListItemText from "@material-ui/core/ListItemText";
-import data from "../../store/data";
+import data from "../../constants/data";
 import {ExpandLess, ExpandMore} from "@material-ui/icons";
 import { useProtectedPath } from "../useProtectedPath";
 import { Redirect } from "react-router";
 
-const theme = createMuiTheme({
-    palette: {
-        primary: {
-            light: '#5ee279',
-            main: '#1aaf4b',
-            dark: '#007e1d',
-            contrastText: '#fff',
-        },
-        secondary: {
-            main: '#1bb14c',
-        },
-    },
-});
 const drawerWidth = 270;
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -32,7 +20,6 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
         },
         drawerPaper: {
-            paddingTop: 64,
             width: drawerWidth,
         },
         nested: {
@@ -43,33 +30,30 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function SideBar() {
     const classes = useStyles();
     const accessGrant = useProtectedPath();
-
+    const [open, setOpen] = useState(0);
     if (!accessGrant) {
       return <Redirect to="/signIn" />;
     }
     return (
         <Container className={classes.root}>
             <Drawer
-                variant="permanent"
-                classes={{
-                    paper: classes.drawerPaper,
-                }}>
-                {data.menus.map(menu => {
+                variant="permanent" >
+                {data.menus.map((menu:any, index: number) => {
                     return (
-                        <div>
-                            <List>
-                                <ListItem button component={props => <Link {...props} to={`${menu.path}`}/>}>
+                        <div  className={classes.drawerPaper}>
+                            <List key={index}>
+                                <ListItem button  onClick={()=> (index === open)?setOpen(-1):setOpen(index)} component={props => <Link {...props} to={`${menu.path}`}/>}>
                                     <ListItemIcon>
                                         <Icon>{menu.icon}/</Icon>
                                     </ListItemIcon>
                                     <ListItemText primary={menu.title}/>
-                                    {(menu.items.length > 0) ? (`true` ? <ExpandLess/> : <ExpandMore/>) : ''}
+                                    {(menu.items.length > 0) ? ((index === open) ? <ExpandLess/> : <ExpandMore/>) : ''}
                                 </ListItem>
                                 {(menu.items.length > 0) ?
                                     (
-                                        menu.items.map(item => {
+                                        menu.items.map((item:any) => {
                                             return (
-                                                <Collapse in={true} timeout="auto" unmountOnExit>
+                                                <Collapse in={index === open} timeout="auto" unmountOnExit>
                                                     <List component="div" disablePadding>
                                                         <ListItem button className={classes.nested}
                                                                   component={props => <Link {...props}

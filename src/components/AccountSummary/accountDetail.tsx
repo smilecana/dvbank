@@ -13,6 +13,7 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
+import {dvTheme} from "../../constants/theme";
 
 
 
@@ -87,9 +88,11 @@ const useStyles = makeStyles(theme => ({
         minWidth: 650,
     },
     root: {
-        flexGrow: 1,
-        height: 'auto',
-        paddingTop: '10%'
+        marginTop: '5%',
+        paddingBottom: '2%',
+        backgroundColor: '#ffffff',
+        borderRadius: '5px',
+        border: '1px solid #eeeeee'
     },
     container: {
         maxHeight: 440,
@@ -104,20 +107,7 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-const theme = createMuiTheme({
-    palette: {
-        primary: {
-            light: '#0E63B0',
-            main: '#0E63B0',
-            dark: '#007e1d',
-            // contrastText: '#fff',
-        },
-        secondary: {
-            main: '#1bb14c',
-        },
-    },
-});
-
+const theme = dvTheme;
 export default function AccountDetail() {
 
     const classes = useStyles();
@@ -148,7 +138,6 @@ export default function AccountDetail() {
         <React.Fragment>
             <Container className={classes.root} maxWidth="lg" >
                 <ThemeProvider theme={theme} >
-
                     <FormControl variant="outlined" className={classes.formControl}>
                         <InputLabel ref={inputLabel} id="demo-simple-select-outlined-label">
                             Select your account

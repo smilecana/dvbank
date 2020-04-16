@@ -1,30 +1,16 @@
 import React from "react";
 import {Button, Container, Grid, Link, Typography} from "@material-ui/core";
-import './Home.scss';
-import {createMuiTheme, makeStyles, ThemeProvider} from "@material-ui/core/styles";
+import {makeStyles, ThemeProvider} from "@material-ui/core/styles";
 import StarsIcon from "@material-ui/icons/Stars";
 import PermPhoneMsgIcon from "@material-ui/icons/PermPhoneMsg";
 import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
+import {dvTheme} from "../../constants/theme";
 
-const theme = createMuiTheme({
-    palette: {
-        primary: {
-            light: '#5ee279',
-            main: '#1aaf4b',
-            dark: '#007e1d',
-            contrastText: '#fff',
-        },
-        secondary: {
-            main: '#1bb14c',
-        },
-    },
-
-});
+const theme = dvTheme;
 const useStyles = makeStyles(theme => ({
     root: {
-        flexGrow: 1,
         height: 'auto',
-        paddingTop: '5%'
+        paddingTop: '9%'
     },
     vitem: {
         margin: '5% 0'
@@ -66,14 +52,33 @@ const useStyles = makeStyles(theme => ({
             color: '#ffffff',
             textDecorationColor: '#ffffff'
         }
+    },
+    iconArea:{
+        color: 'white',
+        backgroundColor:'#1BB14C',
+        height:'auto',
+        paddingTop: '50px'
+    },
+    benefitArea:{
+        backgroundColor:'#F7F7F7',
+        height:'auto',
+    },
+    productsArea:{
+        backgroundColor: '#2F4858',
+        height:'auto',
+    },
+    volunteerArea:{
+        height:'auto',
+        textAlign:'left',
+        padding:'50px 0'
     }
+
 }));
 export default function Home() {
     const classes = useStyles();
     return (
         <ThemeProvider theme={theme}>
-        <div className='home-wrap'>
-            <div className='hero-area'>
+            <div className={classes.root}>
                 <Container maxWidth='lg'>
                     <Grid container spacing={3}>
                         <Grid item xs>
@@ -101,7 +106,7 @@ export default function Home() {
                     </Grid>
                 </Container>
             </div>
-            <div className='icon-area'>
+            <div className={classes.iconArea}>
                 <Container>
                     <Typography variant="h5" align="center">Welcome to DV ONLINE Banking</Typography>
                     <Grid container spacing={3} className={classes.infoItem}>
@@ -132,7 +137,7 @@ export default function Home() {
                     </Grid>
                 </Container>
             </div>
-            <div className='benefit-area'>
+            <div className={classes.benefitArea}>
                 <Container>
                     <Grid container spacing={3} className={classes.benefit}>
                         <Grid item xs>
@@ -155,7 +160,7 @@ export default function Home() {
                     </Grid>
                 </Container>
             </div>
-            <div className='products-area'>
+            <div className={classes.productsArea}>
                 <Container>
                     <Grid container spacing={3} className={classes.products}>
                         <Grid item xs className={classes.productsDesc}>
@@ -212,7 +217,7 @@ export default function Home() {
                     </Grid>
                 </Container>
             </div>
-            <div className='volunteer-area'>
+            <div className={classes.volunteerArea}>
                 <Container>
                     <Typography variant="h5" align="left" style={{color: '#007e1d', fontWeight:"bold"}}>DV BANK</Typography>
                     <Typography variant="h5" align="left" style={{color: '#007e1d', fontStyle: 'italic', fontWeight:"bold"}}>ANY WARE, ANY
@@ -240,7 +245,6 @@ export default function Home() {
                     </Grid>
                 </Container>
             </div>
-        </div>
         </ThemeProvider>
     );
 }

@@ -1,0 +1,3 @@
+export const APP_LOAD = 'APP_LOAD';
+export const USER_PAGE_LOADED = 'USER_PAGE_LOADED';
+export const USER_PAGE_UNLOADED = 'USER_PAGE_UNLOADED';

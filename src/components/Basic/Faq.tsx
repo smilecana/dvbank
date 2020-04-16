@@ -3,21 +3,9 @@ import Box from '@material-ui/core/Box';
 import {Button, ButtonGroup, Container} from "@material-ui/core";
 import {createMuiTheme, makeStyles, ThemeProvider} from '@material-ui/core/styles';
 import CustomizedExpansionPanels from "./Elemt/Expasion";
+import {dvTheme} from "../../constants/theme";
 
-const theme = createMuiTheme({
-    palette: {
-        primary: {
-            light: '#5ee279',
-            main: '#1aaf4b',
-            dark: '#007e1d',
-            contrastText: '#444',
-        },
-        secondary: {
-            main: '#1bb14c',
-        },
-    },
-
-});
+const theme = dvTheme;
 const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
@@ -35,8 +23,6 @@ const useStyles = makeStyles(theme => ({
         textAlign:'center',
     }
 }));
-
-
 export default function Faq() {
     const classes = useStyles();
 

@@ -2,31 +2,14 @@ import * as React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from "@material-ui/core/Grid";
 import { ThemeProvider } from '@material-ui/core/styles';
-import { createMuiTheme } from '@material-ui/core/styles';
 import  { useState } from 'react';
-import './Login.scss';
 import { CssBaseline, Container, Typography, TextField, Button, Link, Divider } from '@material-ui/core';
-import { login, logout } from '../authActions';
+import { login, logout } from './authActions';
+import {dvTheme} from "../constants/theme";
 
 
-const theme = createMuiTheme({
-    palette: {
-        primary: {
-            light: '#5ee279',
-            main: '#1aaf4b',
-            dark: '#007e1d',
-            contrastText: '#fff',
-        },
-        secondary: {
-            main: '#1bb14c',
-        },
-    },
-});
-
+const theme = dvTheme;
 const useStyles = makeStyles(theme => ({
-    root:{
-
-    },
     main: {
         border: '1px solid #eee',
         borderRadius: '5px',
@@ -38,7 +21,6 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(5),
         display: 'flex',
         flexDirection: 'column',
-        // alignItems: 'center',
         padding: theme.spacing(5),
         
     },
@@ -81,29 +63,6 @@ export default function Login() {
             window.location.href = "/accounts/summary";
           }
     }
-
-
-    // state = {
-    //     email: "",
-    //     password: "",
-        
-    //   };
-    
-    //   handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    //     // No longer need to cast to any - hooray for react!
-    //     this.setState({[e.target.name]: e.target.value});
-    //   }
-
-    //   submit(){
-    //       if(this.state.email == "user" && this.state.password == "password")
-    //       {
-    //         // login();
-    //         console.log("success login")
-    //       }
-    //   }
-
-
-    // render(){
         const classes = useStyles();
         return (
             <ThemeProvider theme={theme} >
@@ -204,7 +163,5 @@ export default function Login() {
                 </Container>
             </ThemeProvider>
     );
-    // }
 }
 
-// export default Login;
