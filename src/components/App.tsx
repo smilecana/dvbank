@@ -17,7 +17,7 @@ import AccountSummary from "./AccountSummary/accountSummary";
 import AccountDetail from "./AccountSummary/accountDetail";
 import { store } from './store';
 // import { Nav } from './Nav';
-import AccountTransfer from "./AccountSummary/transfer";
+import AccountTransfer from "./AccountSummary/AccountTransfer";
 import SideBar from "./Menus/SideBar";
 import { MainBar } from "./Menus/MainBar";
 
@@ -43,7 +43,7 @@ export default function App() {
                 <Route path="/register" component={Register}/>
                 <Route path="/accounts/summary" component={AccountSummary}/>
                 <Route path="/accounts/details" component={AccountDetail}/>
-                <Route path="/accounts/transfer" component={AccountTransfer}/>
+                <Route path="/transfer/new" component={AccountTransfer}/>
                 <Route path="/">
                     <Home/>
                 </Route>

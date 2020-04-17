@@ -56,6 +56,7 @@ const useStyles = makeStyles(theme => ({
         paddingTop: '10%',
         display: 'flex',
         flexWrap: 'wrap',
+        marginLeft: theme.spacing(35),
     },
     container: {
         maxHeight: 440,
@@ -135,7 +136,8 @@ export default function AccountTransfer() {
 
     return (
         <React.Fragment>
-            <Container className={classes.root} maxWidth="lg" >
+            <div className={classes.root}>
+            <Container maxWidth="lg" >
                 <ThemeProvider theme={theme} >
 
                     <FormControl variant="outlined" className={classes.formControl}>
@@ -223,6 +225,7 @@ export default function AccountTransfer() {
 
                 </ThemeProvider>
             </Container>
+            </div>
         </React.Fragment>
     )
 }

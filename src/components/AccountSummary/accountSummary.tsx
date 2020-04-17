@@ -31,6 +31,15 @@ function preventDefault(event: { preventDefault: () => void; }) {
 };
 
 const useStyles = makeStyles(theme => ({
+    nested: {
+        marginTop: '5%',
+        paddingBottom: '2%',
+        marginLeft: theme.spacing(35),
+        padding: theme.spacing(4),
+        // backgroundColor: '#ffffff',
+        // borderRadius: '5px',
+        // border: '1px solid #eeeeee'
+    },
     Title: {
         marginTop: theme.spacing(4),
         marginBottom: theme.spacing(2),
@@ -47,13 +56,7 @@ const useStyles = makeStyles(theme => ({
     fBold: {
         fontWeight: 'bold'
     },
-    nested: {
-        marginTop: '5%',
-        paddingBottom: '2%',
-        backgroundColor: '#ffffff',
-        borderRadius: '5px',
-        border: '1px solid #eeeeee'
-    },
+    
 
 }));
 
@@ -66,7 +69,8 @@ export default function AccountSummary() {
     }
     return (
         <ThemeProvider theme={theme}>
-            <Container className={classes.nested}>
+            <Container >
+                <div className={classes.nested}>
                 <div>
                     <Typography component="h3" variant="h5" className={classes.Title} align="left" >
                         Banking
@@ -158,6 +162,7 @@ export default function AccountSummary() {
                             </TableRow>
                         </TableBody>
                     </Table>
+                </div>
                 </div>
             </Container>
         </ThemeProvider>

@@ -89,10 +89,12 @@ const useStyles = makeStyles(theme => ({
     },
     root: {
         marginTop: '5%',
+        padding: theme.spacing(4),
         paddingBottom: '2%',
         backgroundColor: '#ffffff',
         borderRadius: '5px',
-        border: '1px solid #eeeeee'
+        border: '1px solid #eeeeee',
+        marginLeft: theme.spacing(35),
     },
     container: {
         maxHeight: 440,
@@ -136,7 +138,8 @@ export default function AccountDetail() {
 
     return (
         <React.Fragment>
-            <Container className={classes.root} maxWidth="lg" >
+            <div className={classes.root}>
+            <Container  maxWidth="lg" >
                 <ThemeProvider theme={theme} >
                     <FormControl variant="outlined" className={classes.formControl}>
                         <InputLabel ref={inputLabel} id="demo-simple-select-outlined-label">
@@ -278,6 +281,7 @@ export default function AccountDetail() {
 
                 </ThemeProvider>
             </Container>
+            </div>
         </React.Fragment>
     )
 }

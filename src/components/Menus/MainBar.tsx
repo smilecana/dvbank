@@ -16,10 +16,13 @@ const useStyles = makeStyles((theme: Theme) =>
             '& button': {
                 color: 'white'
             },
-            position: 'absolute',
+            position: 'fixed',
             '& Toolbar': {
                 height: '130px'
             },
+            overflow: 'hidden',
+            
+            // marginBottom: "160px",
             zIndex: theme.zIndex.drawer + 1
         },
         login: {
@@ -40,7 +43,7 @@ export const MainBar: React.FC = () => {
     };
     return (
         <>
-            <AppBar position="absolute" className={classes.root}>
+            <AppBar className={classes.root}>
                 <Container maxWidth={'lg'}>
                     <Toolbar>
                         {(!authStoreState.authorized) ?

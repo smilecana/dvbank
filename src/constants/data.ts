@@ -38,8 +38,8 @@ export default {
             "items": [
                 {
                     "title": "Transfer",
-                    "path": "/transfer/summary",
-                    "key": "TRANSFER_SUMMARY",
+                    "path": "/transfer/new",
+                    "key": "TRANSFER_NEW",
 
                 },
                 {
