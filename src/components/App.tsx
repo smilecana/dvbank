@@ -41,9 +41,13 @@ export default function App() {
                 </Route>
                 {/* <Route path="/user/:userId" component={UserDetail}/> */}
                 <Route path="/register" component={Register}/>
+                
                 <Route path="/accounts/summary" component={AccountSummary}/>
                 <Route path="/accounts/details" component={AccountDetail}/>
+                <Route path="/accounts" component={AccountSummary}/>
                 <Route path="/transfer/new" component={AccountTransfer}/>
+                <Route path="/transfer" component={AccountTransfer}/>
+
                 <Route path="/">
                     <Home/>
                 </Route>

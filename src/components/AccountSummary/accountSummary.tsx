@@ -32,13 +32,21 @@ function preventDefault(event: { preventDefault: () => void; }) {
 
 const useStyles = makeStyles(theme => ({
     nested: {
-        marginTop: '5%',
-        paddingBottom: '2%',
-        marginLeft: theme.spacing(35),
-        padding: theme.spacing(4),
-        // backgroundColor: '#ffffff',
-        // borderRadius: '5px',
+        // marginTop: '5%',
+        // paddingBottom: '2%',
+        // marginLeft: theme.spacing(35),
+        // padding: theme.spacing(4),
+        // // backgroundColor: '#ffffff',
+        // // borderRadius: '5px',
         // border: '1px solid #eeeeee'
+        marginTop: '5%',
+        padding: theme.spacing(4),
+        paddingBottom: '2%',
+        backgroundColor: '#ffffff',
+        borderRadius: '5px',
+        border: '1px solid #eeeeee',
+        marginLeft: theme.spacing(32),
+        marginRight: 0
     },
     Title: {
         marginTop: theme.spacing(4),
@@ -50,7 +58,7 @@ const useStyles = makeStyles(theme => ({
         cursor: "pointer",
     },
     tableHead: {
-        backgroundColor: '#cccccc',
+        // backgroundColor: '#cccccc',
         height: '3em',
     },
     fBold: {
