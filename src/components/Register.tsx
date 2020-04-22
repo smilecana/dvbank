@@ -1,16 +1,12 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
+import React, {useState } from 'react';
 import {Divider} from '@material-ui/core';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import { TextField, Button , FormControlLabel, Checkbox, Grid, Typography} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {ThemeProvider} from '@material-ui/core/styles';
-
 import {dvTheme} from "../constants/theme";
+import axios from 'axios';
+import { useHistory } from "react-router-dom";
 
 const theme = dvTheme;
 const useStyles = makeStyles(theme => ({
@@ -60,16 +56,31 @@ const useStyles = makeStyles(theme => ({
         margin: '2% auto 4% auto',
     }
 }));
-
-export default function Register() {
+export default function Register(){
+    let history = useHistory();
+    const [user, setUsers] = useState<any>({email: "", firstName: "", lastName: "", password: ""});
     const classes = useStyles();
+    const handleChange = (e: any) => {
+        // @ts-ignore
+        setUsers({...user,[e.target.name]: e.target.value});
+    }
+    const onSubmit = (e: any) => {
+        e.preventDefault();
+        axios.post('/customer/addCustomer', user)
+        .then((response) => {
+            alert("success");
+            history.push('/signIn');
+        }, (error) => {
+            console.log(error);
+        });
+    }
     return (
         <>
             <Container component="main" className={classes.main} maxWidth='md'>
                 <ThemeProvider theme={theme}>
                     <Grid container spacing={1}>
                         <Grid item xs={6} className={classes.register}>
-                            <form className={classes.form}>
+                            <form className={classes.form} id='UserFrom' onSubmit={onSubmit} >
                                 <Grid container spacing={4}>
                                     <Grid item xs={12} sm={6}>
                                         <TextField
@@ -85,6 +96,7 @@ export default function Register() {
                                             InputLabelProps={{
                                                 shrink: true,
                                             }}
+                                            onChange={handleChange}
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
@@ -100,6 +112,7 @@ export default function Register() {
                                             InputLabelProps={{
                                                 shrink: true,
                                             }}
+                                            onChange={handleChange}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -115,6 +128,7 @@ export default function Register() {
                                             InputLabelProps={{
                                                 shrink: true,
                                             }}
+                                            onChange={e => setUsers({...user, email: e.target.value })}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -131,6 +145,7 @@ export default function Register() {
                                             InputLabelProps={{
                                                 shrink: true,
                                             }}
+                                            onChange={handleChange}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -147,6 +162,7 @@ export default function Register() {
                                             InputLabelProps={{
                                                 shrink: true,
                                             }}
+
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
