@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import clsx from 'clsx';
 import {Link} from "react-router-dom";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
@@ -42,7 +41,7 @@ export default function SideBar() {
                     return (
                         <div  className={classes.drawerPaper}>
                             <List key={index}>
-                                <ListItem button  onClick={()=> (index === open)?setOpen(-1):setOpen(index)} component={props => <Link {...props} to={`${menu.path}`}/>}>
+                                <ListItem button  onClick={()=> (index === open)?setOpen(-1):setOpen(index)}>
                                     <ListItemIcon>
                                         <Icon>{menu.icon}/</Icon>
                                     </ListItemIcon>
@@ -51,9 +50,9 @@ export default function SideBar() {
                                 </ListItem>
                                 {(menu.items.length > 0) ?
                                     (
-                                        menu.items.map((item:any) => {
+                                        menu.items.map((item:any, index: number) => {
                                             return (
-                                                <Collapse in={index === open} timeout="auto" unmountOnExit>
+                                                <Collapse in={index === open} timeout="auto" unmountOnExit key={index}>
                                                     <List component="div" disablePadding>
                                                         <ListItem button className={classes.nested}
                                                                   component={props => <Link {...props}

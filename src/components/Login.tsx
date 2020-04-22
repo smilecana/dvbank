@@ -2,10 +2,11 @@ import * as React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from "@material-ui/core/Grid";
 import { ThemeProvider } from '@material-ui/core/styles';
-import  { useState } from 'react';
+import {useState} from 'react';
 import { CssBaseline, Container, Typography, TextField, Button, Link, Divider } from '@material-ui/core';
-import { login, logout } from './authActions';
+import { login, setCustomer } from './authActions';
 import {dvTheme} from "../constants/theme";
+import axios from "axios";
 
 
 const theme = dvTheme;
@@ -44,24 +45,21 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-
-
-
 export default function Login() {
-    // check login or not
-   
     //set state in hook function
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const handleSubmit = (e:any) => {
         e.preventDefault();
-        if(email === "user" && password === "test")
-          {
-            login();
-            console.log("success login");
-            window.location.href = "/accounts/summary";
-          }
+        axios.post('/customer/login', {email:email, password:password})
+            .then((response) => {
+                login();
+                setCustomer(response.data);
+                window.location.href='/accounts/summary';
+            }, (error) => {
+                console.log(error);
+            });
     }
         const classes = useStyles();
         return (

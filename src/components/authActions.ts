@@ -6,7 +6,11 @@ export function login() {
   });
   console.log(store.state)
 }
-
+export function setCustomer(customer){
+    store.setState({
+        customer: customer
+    })
+}
 export function logout() {
     store.setState({
     authorized: false

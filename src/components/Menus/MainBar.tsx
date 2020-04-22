@@ -81,7 +81,7 @@ export const MainBar: React.FC = () => {
                                         open={Boolean(anchorEl)}
                                         onClose={handleClose}>
                                         <MenuItem onClick={handleClose} component={props => <Link {...props}
-                                                                                                  to={`/user/123456789`}/>}>My
+                                                                                                  to={`/user/${authStoreState.customer['id']}`}/>}>My
                                             Profile</MenuItem>
                                         <MenuItem onClick={handleClose} component={props => <Link {...props}
                                                                                                   to={`/accounts/summary`}/>}>My
