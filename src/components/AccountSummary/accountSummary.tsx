@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Link from '@material-ui/core/Link';
-import { makeStyles, createMuiTheme, ThemeProvider, Theme, createStyles } from '@material-ui/core/styles';
+import { makeStyles,  Theme, createStyles, ThemeProvider } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { Typography, Button, Divider, Container, Toolbar } from '@material-ui/core';
+import { Typography,  Container } from '@material-ui/core';
 import { useProtectedPath } from "../useProtectedPath";
 import { Redirect } from "react-router";
 import { dvTheme } from "../../constants/theme";
@@ -14,19 +14,6 @@ import NewAccount from "./NewAccount/NewAccount";
 import { store } from '../store';
 import { useStore } from 'react-stores';
 
-// // Generate Order Data
-// function createData(id: number, Account: string, Balance: number) {
-//     return {id, Account, Balance};
-// }
-
-// const rows = [
-//     createData(1, 'Basic- *********-7890', 312.44),
-//     createData(2, 'Basic- *********-2340', 1899.44),
-// ];
-
-// function preventDefault(event: { preventDefault: () => void; }) {
-//     event.preventDefault();
-// };
 
 const useStyles = makeStyles(theme => ({
     nested: {
@@ -80,92 +67,42 @@ export default function AccountSummary() {
         <ThemeProvider theme={theme}>
             <Container >
                 <div className={classes.nested}>
-                    <div>
-                        <Typography component="h3" variant="h5" className={classes.Title} align="left" >
-                            {customer['accounts'][0]['type']}
-                        </Typography>
-                        <NewAccount type='account' />
-                        <Table size="small">
-                            <TableHead>
-                                <TableRow className={classes.tableHead}>
-                                    <TableCell>Account</TableCell>
-                                    <TableCell align="right">Balance $</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
+                    {customer['accounts'].map(item => {
+                         
+                         return (<div key={item['number']}>
+                                <Typography component="h3" variant="h5" className={classes.Title} align="left" >
+                                    {item['type']} 
+                                </Typography>
+                                <NewAccount type='account' />
+                                <Table size="small">
+                                    <TableHead>
+                                        <TableRow className={classes.tableHead}>
+                                            <TableCell>Account</TableCell>
+                                            <TableCell align="right">Balance $</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
 
-                                <TableRow key={customer['accounts'][0]['number']}>
+                                        <TableRow key={item['number']}>
 
-                                    {/* <TableCell><Link color="primary"
-                                                     className={classes.Pointer}>{customer['accounts'][0]['number']}</Link></TableCell> */}
-                                    <TableCell>{customer['accounts'][0]['number']}</TableCell>
-                                    <TableCell align="right">$ {customer['accounts'][0]['balance']}</TableCell>
-                                </TableRow>
+                                            {/* <TableCell><Link color="primary"
+                                                            className={classes.Pointer}>{customer['accounts'][0]['number']}</Link></TableCell> */}
+                                            <TableCell>{item['type']} {item['number']}</TableCell>
+                                            <TableCell align="right">$ {item['balance']}</TableCell>
+                                        </TableRow>
 
 
-                                <TableRow>
-                                    <TableCell align="right" className={classes.fBold}>Total Banking Balance
-                                    (CAD)</TableCell>
-                                    <TableCell align="right" className={classes.fBold}>$ {customer['accounts'][0]['balance']}</TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </Table>
-                    </div>
-                    <div>
-                        <Typography component="h3" variant="h5" className={classes.Title}>
-                            {customer['accounts'][1]['type']}
-                        </Typography>
-                        <NewAccount />
-                        <Table size="small">
-                            <TableHead>
-                                <TableRow className={classes.tableHead}>
-                                    <TableCell>Account</TableCell>
-                                    <TableCell align="right">Balance</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
+                                        <TableRow>
+                                            <TableCell align="right" className={classes.fBold}>Total Banking Balance
+                                            (CAD)</TableCell>
+                                            <TableCell align="right" className={classes.fBold}>$ {item['balance']}</TableCell>
+                                        </TableRow>
+                                    </TableBody>
+                                </Table>
+                            </div>);
 
-                                <TableRow key={customer['accounts'][1]['number']}>
-                                    <TableCell>{customer['accounts'][1]['number']}</TableCell>
-                                    <TableCell align="right">$ {customer['accounts'][1]['balance']}</TableCell>
-                                </TableRow>
-
-                                <TableRow>
-                                    <TableCell align="right" className={classes.fBold}>Total Banking Balance
-                                    (CAD)</TableCell>
-                                    <TableCell align="right" className={classes.fBold}>$ {customer['accounts'][1]['balance']}</TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </Table>
-                    </div>
-                    <div>
-                        <Typography component="h3" variant="h5" className={classes.Title}>
-                            {customer['accounts'][2]['type']}
-                        </Typography>
-                        <NewAccount />
-                        <Table size="small">
-                            <TableHead>
-                                <TableRow className={classes.tableHead}>
-                                    <TableCell>Account</TableCell>
-                                    <TableCell align="right">Balance</TableCell>
-
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-
-                                <TableRow key={customer['accounts'][2]['number']}>
-                                    <TableCell>{customer['accounts'][2]['number']}</TableCell>
-                                    <TableCell align="right">$ {customer['accounts'][2]['balance']}</TableCell>
-                                </TableRow>
-
-                                <TableRow>
-                                    <TableCell align="right" className={classes.fBold}>Total Banking Balance
-                                    (CAD)</TableCell>
-                                    <TableCell align="right" className={classes.fBold}>$ {customer['accounts'][2]['balance']}</TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </Table>
-                    </div>
+                    })}
+                    
                 </div>
             </Container>
         </ThemeProvider>
