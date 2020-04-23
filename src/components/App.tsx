@@ -19,15 +19,18 @@ import { store } from './store';
 import AccountTransfer from "./AccountSummary/AccountTransfer";
 import SideBar from "./Menus/SideBar";
 import { MainBar } from "./Menus/MainBar";
+import Product from "./Basic/Product";
 
 export default function App() {
     const authStoreState = useStore(store);
     let location = window.location.pathname;
-    const publicMenus= ['/home','/products','/event','/faq','/signIn'];
+    const publicMenus= ['/','/home','/products','/event','/faq','/signin','/register'];
     return (
         <BrowserRouter>
+            
             <MainBar />
             {
+                
                 (authStoreState.authorized && !publicMenus.includes(location)) ?
                 (<SideBar/>) : ''
 
@@ -35,6 +38,7 @@ export default function App() {
             <Switch>
                 <Route exact path="/home" component={Home}/>
                 <Route exact path="/event" component={Event}/>
+                <Route exact path="/products" component={Product}/>
                 <Route exact path="/faq" component={Faq}/>
                 <Route exact path="/signIn">
                     <Login/>

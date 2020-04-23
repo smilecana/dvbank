@@ -77,7 +77,7 @@ export default function AccountSummary() {
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
-                                            {accounts[at].map(account => {
+                                            {/* {accounts[at].map(account => {
                                                 balance += parseFloat(account['balance']);
                                                 return (
                                                     <>
@@ -88,7 +88,7 @@ export default function AccountSummary() {
                                                         </TableRow>
                                                     </>
                                                 )
-                                            })}
+                                            })} */}
                                             <TableRow>
                                                 <TableCell align="right" className={classes.fBold}>Total Banking
                                                     Balance

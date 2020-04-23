@@ -8,6 +8,7 @@ import {store} from '../store';
 import {useStore} from 'react-stores';
 import {logout} from "../authActions";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
+import logo from "../../asset/img/logo.png";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -28,6 +29,12 @@ const useStyles = makeStyles((theme: Theme) =>
         login: {
             marginLeft: 'auto'
         },
+        img: {
+            width: "20%",
+            // marginTop: "20px",
+            // marginBottom: "20px",
+            marginRight: "20px"
+        }
     }),
 );
 
@@ -46,6 +53,8 @@ export const MainBar: React.FC = () => {
             <AppBar className={classes.root}>
                 <Container maxWidth={'lg'}>
                     <Toolbar>
+                    <img className={classes.img} src={logo} alt="logo"/>
+
                         {(!authStoreState.authorized) ?
                             (
                                 <>
