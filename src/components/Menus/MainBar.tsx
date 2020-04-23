@@ -72,7 +72,7 @@ export const MainBar: React.FC = () => {
                                 <Typography variant="h6" align="right" className={classes.login}>
                                     Hello!
                                     <Button aria-controls="user-menu" aria-haspopup="true" onClick={handleClick}>
-                                        user
+                                        { authStoreState.customer['lastName']},{authStoreState.customer['firstName']}
                                     </Button>
                                     <Menu
                                         id="user-menu"

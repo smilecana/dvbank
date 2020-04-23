@@ -8,6 +8,7 @@ import {dvTheme} from "../../constants/theme";
 import {useStore} from "react-stores";
 import {store} from '../store';
 import axios from "axios";
+import {setCustomer} from "../authActions";
 
 const theme = dvTheme;
 const useStyles = makeStyles((theme: Theme) =>
@@ -19,7 +20,6 @@ const useStyles = makeStyles((theme: Theme) =>
             backgroundColor: '#ffffff',
             borderRadius: '5px',
             border: '1px solid #eeeeee',
-            marginLeft: theme.spacing(35),
         },
         title: {
             marginTop: theme.spacing(4),
@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
             marginBottom: '16px'
         },
     }),
+
 );
 const Detail = () => {
     const classes = useStyles();
@@ -48,9 +49,11 @@ const Detail = () => {
     }
     const onSubmit = (e: any) => {
         e.preventDefault();
-        axios.post(`/customer/${customer['id']}`, user)
+        axios.put(`/customer/${customer['id']}`, user)
             .then((response) => {
-                alert("success");
+                console.log(user);
+                setCustomer(response.data);
+                alert('Saved!');
             }, (error) => {
                 console.log(error);
             });
@@ -72,6 +75,7 @@ const Detail = () => {
                                 id="firstName"
                                 name="firstName"
                                 label="First name"
+                                onKeyDown={e => e.stopPropagation()}
                                 fullWidth
                                 value={customer['firstName']}
                                 onChange={handleChange}
@@ -90,6 +94,16 @@ const Detail = () => {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
+                                id="phoneNumber"
+                                name="phoneNumber"
+                                label="Phone Number"
+                                fullWidth
+                                value={customer['phoneNumber']}
+                                onChange={handleChange}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
                                 id="email"
                                 name="email"
                                 label="Email"
@@ -102,33 +116,24 @@ const Detail = () => {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
-                                id="address1"
-                                name="address1"
-                                label="Address line 1"
+                                id="address"
+                                name="address"
+                                label="Address"
                                 fullWidth
                                 autoComplete="billing address-line1"
-                                value={customer['address1']}
-                                onChange={handleChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                id="address2"
-                                name="address2"
-                                label="Address line 2"
-                                fullWidth
-                                autoComplete="billing address-line2"
-                                value={customer['address2']}
+                                value={customer['address']}
                                 onChange={handleChange}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
-                                id="city"
-                                name="city"
-                                label="City"
+                                required
+                                id="zip"
+                                name="postalCode"
+                                label="Zip / Postal code"
                                 fullWidth
-                                value={customer['city']}
+                                autoComplete="billing postal-code"
+                                value={customer['postalCode']}
                                 onChange={handleChange}
                             />
                         </Grid>
@@ -138,20 +143,8 @@ const Detail = () => {
                                 name="province"
                                 label="Province"
                                 fullWidth
-                                autoComplete="billing address-level2"
+                                autoComplete="billing province"
                                 value={customer['province']}
-                                onChange={handleChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                required
-                                id="zip"
-                                name="zip"
-                                label="Zip / Postal code"
-                                fullWidth
-                                autoComplete="billing postal-code"
-                                value={customer['postalCode']}
                                 onChange={handleChange}
                             />
                         </Grid>
