@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
@@ -9,6 +9,7 @@ import {useStore} from "react-stores";
 import {store} from '../store';
 import axios from "axios";
 import {setCustomer} from "../authActions";
+import {filterAccounts} from "../common";
 
 const theme = dvTheme;
 const useStyles = makeStyles((theme: Theme) =>
@@ -47,6 +48,9 @@ const Detail = () => {
         // @ts-ignore
         setUsers({...customer,[e.target.name]: e.target.value});
     }
+    useEffect(() => {
+        setUsers(customer);
+    }, []);
     const onSubmit = (e: any) => {
         e.preventDefault();
         axios.put(`/customer/${customer['id']}`, user)
@@ -71,24 +75,21 @@ const Detail = () => {
                     <Grid container spacing={3}>
                         <Grid item xs={12} sm={6}>
                             <TextField
-                                required
                                 id="firstName"
                                 name="firstName"
                                 label="First name"
-                                onKeyDown={e => e.stopPropagation()}
                                 fullWidth
-                                value={customer['firstName']}
+                                value={user['firstName']}
                                 onChange={handleChange}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
-                                required
                                 id="lastName"
                                 name="lastName"
                                 label="Last name"
                                 fullWidth
-                                value={customer['lastName']}
+                                value={user['lastName']}
                                 onChange={handleChange}
                             />
                         </Grid>
@@ -98,7 +99,7 @@ const Detail = () => {
                                 name="phoneNumber"
                                 label="Phone Number"
                                 fullWidth
-                                value={customer['phoneNumber']}
+                                value={user['phoneNumber']}
                                 onChange={handleChange}
                             />
                         </Grid>
@@ -111,7 +112,7 @@ const Detail = () => {
                                     readOnly: true,
                                 }}
                                 fullWidth
-                                value={customer['email']}
+                                value={user['email']}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -121,7 +122,7 @@ const Detail = () => {
                                 label="Address"
                                 fullWidth
                                 autoComplete="billing address-line1"
-                                value={customer['address']}
+                                value={user['address']}
                                 onChange={handleChange}
                             />
                         </Grid>
@@ -133,7 +134,7 @@ const Detail = () => {
                                 label="Zip / Postal code"
                                 fullWidth
                                 autoComplete="billing postal-code"
-                                value={customer['postalCode']}
+                                value={user['postalCode']}
                                 onChange={handleChange}
                             />
                         </Grid>
@@ -144,7 +145,7 @@ const Detail = () => {
                                 label="Province"
                                 fullWidth
                                 autoComplete="billing province"
-                                value={customer['province']}
+                                value={user['province']}
                                 onChange={handleChange}
                             />
                         </Grid>
