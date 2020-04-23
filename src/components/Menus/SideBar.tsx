@@ -41,7 +41,7 @@ export default function SideBar() {
                     return (
                         <div  className={classes.drawerPaper}>
                             <List key={index}>
-                                <ListItem button  onClick={()=> (index === open)?setOpen(-1):setOpen(index)}>
+                                <ListItem button  onClick={()=> (index === open)?setOpen(-1):setOpen(index)} component={props => <Link {...props} to={`${menu.path}`}/>}>
                                     <ListItemIcon>
                                         <Icon>{menu.icon}/</Icon>
                                     </ListItemIcon>
@@ -50,9 +50,9 @@ export default function SideBar() {
                                 </ListItem>
                                 {(menu.items.length > 0) ?
                                     (
-                                        menu.items.map((item:any, index: number) => {
+                                        menu.items.map((item:any, idx: number) => {
                                             return (
-                                                <Collapse in={index === open} timeout="auto" unmountOnExit key={index}>
+                                                <Collapse in={index === open} timeout="auto" key={idx}>
                                                     <List component="div" disablePadding>
                                                         <ListItem button className={classes.nested}
                                                                   component={props => <Link {...props}

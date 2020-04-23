@@ -22,6 +22,11 @@ export default {
                     "title": "Account Details",
                     "path": "/accounts/details",
                     "key": "ACCOUNTS_DETAILS",
+                },
+                {
+                    "title": "Account Document",
+                    "path": "/accounts/document",
+                    "key": "ACCOUNTS_DOCUMENT",
                 }
             ]
         },
@@ -32,6 +37,12 @@ export default {
             "key": "TRANSFER",
             "items": [
                 {
+                    "title": "Transfer",
+                    "path": "/transfer/summary",
+                    "key": "TRANSFER_SUMMARY",
+
+                },
+                {
                     "title": "Transfers History",
                     "path": "/transfer/transfers-history",
                     "key": "TRANSFER_HISTORY",
@@ -40,4 +51,3 @@ export default {
         }
     ]
 }
-

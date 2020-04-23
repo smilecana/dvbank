@@ -17,3 +17,9 @@ export function logout() {
   });
   console.log(store.state)
 }
+
+export function setFilterAccounts(accounts){
+    store.setState({
+        filterAccounts:accounts
+    })
+}

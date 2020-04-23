@@ -5,33 +5,30 @@ import {FormControl, InputLabel, MenuItem, Select} from "@material-ui/core";
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         formControl:{
-
+            width:'100%'
         }
     }),
 );
 export function AccountList(){
     const classes = useStyles();
-    const [age, setAge] = React.useState('');
+    const [account, setAccount] = React.useState('');
 
     const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        setAge(event.target.value as string);
+        setAccount(event.target.value as string);
     }
     return (
         <FormControl variant="outlined" className={classes.formControl}>
-            <InputLabel id="demo-simple-select-outlined-label">Age</InputLabel>
+            <InputLabel id="demo-simple-select-outlined-label">Account Type</InputLabel>
             <Select
                 labelId="demo-simple-select-outlined-label"
                 id="demo-simple-select-outlined"
-                value={age}
+                value={account}
                 onChange={handleChange}
-                label="Age"
+                label="Account Type"
             >
-                <MenuItem value="">
-                    <em>None</em>
-                </MenuItem>
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
+                <MenuItem value={'savings'}>savings</MenuItem>
+                <MenuItem value={'chequing'}>chequing</MenuItem>
+                <MenuItem value={'credit'}>credit</MenuItem>
             </Select>
         </FormControl>
     )
