@@ -16,12 +16,12 @@ import {filterAccounts} from "../common";
 
 const useStyles = makeStyles(theme => ({
     nested: {
-        marginTop: '5%',
         padding: theme.spacing(4),
         paddingBottom: '2%',
         backgroundColor: '#ffffff',
         borderRadius: '5px',
         border: '1px solid #eeeeee',
+        marginLeft: theme.spacing(35),
     },
     Title: {
         marginTop: theme.spacing(4),
@@ -62,10 +62,10 @@ export default function AccountSummary() {
             <Container maxWidth={'lg'} className={classes.nested}>
                 <NewAccount type='account'/>
                 {
-                    accountTypes.map(at => {
+                    accountTypes.map((at,index) => {
                         let balance = 0;
                             return (
-                                <div>
+                                <div key={index}>
                                     <Typography component="h3" variant="h5" className={classes.Title} align="left">
                                         {at}
                                     </Typography>

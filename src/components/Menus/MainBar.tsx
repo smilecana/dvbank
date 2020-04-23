@@ -1,13 +1,13 @@
 import React from "react";
 import AppBar from '@material-ui/core/AppBar';
-import {Container, Toolbar, Typography, Button, Menu, MenuItem} from "@material-ui/core";
+import { Container, Toolbar, Typography, Button, Menu, MenuItem } from "@material-ui/core";
 import {
     Link,
 } from "react-router-dom";
-import {store} from '../store';
-import {useStore} from 'react-stores';
-import {logout} from "../authActions";
-import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
+import { store } from '../store';
+import { useStore } from 'react-stores';
+import { logout } from "../authActions";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import logo from "../../asset/img/logo.png";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 height: '130px'
             },
             overflow: 'hidden',
-            
+
             // marginBottom: "160px",
             zIndex: theme.zIndex.drawer + 1
         },
@@ -33,7 +33,8 @@ const useStyles = makeStyles((theme: Theme) =>
             width: "20%",
             // marginTop: "20px",
             // marginBottom: "20px",
-            marginRight: "20px"
+            marginRight: "20px",
+            cursor: "pointer"
         }
     }),
 );
@@ -49,15 +50,16 @@ export const MainBar: React.FC = () => {
         setAnchorEl(null);
     };
     return (
-        <>
+        
             <AppBar className={classes.root}>
                 <Container maxWidth={'lg'}>
                     <Toolbar>
-                    <img className={classes.img} src={logo} alt="logo"/>
-
+                        <img className={classes.img} src={logo} alt="logo" onClick={()=> window.location.href='/home'} />
+                        
                         {(!authStoreState.authorized) ?
                             (
                                 <>
+
                                     <Typography variant="h6" align="left">
                                         <Link to="/home"><Button>Home</Button></Link>
                                     </Typography>
@@ -78,30 +80,32 @@ export const MainBar: React.FC = () => {
                                     </Typography>
                                 </>
                             ) : (
-                                <Typography variant="h6" align="right" className={classes.login}>
-                                    Hello!
+                                <>
+                                    <Typography variant="h6" align="right" className={classes.login}>
+                                        Hello!
                                     <Button aria-controls="user-menu" aria-haspopup="true" onClick={handleClick}>
-                                        { authStoreState.customer['lastName']},{authStoreState.customer['firstName']}
-                                    </Button>
-                                    <Menu
-                                        id="user-menu"
-                                        anchorEl={anchorEl}
-                                        keepMounted
-                                        open={Boolean(anchorEl)}
-                                        onClose={handleClose}>
-                                        <MenuItem onClick={handleClose} component={props => <Link {...props}
-                                                                                                  to={`/user/${authStoreState.customer['id']}`}/>}>My
+                                            {authStoreState.customer['lastName']},{authStoreState.customer['firstName']}
+                                        </Button>
+                                        <Menu
+                                            id="user-menu"
+                                            anchorEl={anchorEl}
+                                            keepMounted
+                                            open={Boolean(anchorEl)}
+                                            onClose={handleClose}>
+                                            <MenuItem onClick={handleClose} component={props => <Link {...props}
+                                                to={`/user/${authStoreState.customer['id']}`} />}>My
                                             Profile</MenuItem>
-                                        <MenuItem onClick={handleClose} component={props => <Link {...props}
-                                                                                                  to={`/accounts/summary`}/>}>My
+                                            <MenuItem onClick={handleClose} component={props => <Link {...props}
+                                                to={`/accounts/summary`} />}>My
                                             Accounts</MenuItem>
-                                        <MenuItem onClick={logout}>Logout</MenuItem>
-                                    </Menu>
-                                </Typography>
-                            )}
-                    </Toolbar>
-                </Container>
+                                            <MenuItem onClick={logout}>Logout</MenuItem>
+                                        </Menu>
+                                    </Typography>
+                                    </>
+                                        )}
+                            </Toolbar>
+                        </Container>
             </AppBar>
-        </>
+        
     )
 };

@@ -53,7 +53,7 @@ const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
         height: 'auto',
-        paddingTop: '10%',
+        paddingTop: '3%',
         display: 'flex',
         flexWrap: 'wrap',
         marginLeft: theme.spacing(35),

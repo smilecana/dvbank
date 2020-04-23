@@ -39,7 +39,7 @@ export default function SideBar() {
                 variant="permanent" >
                 {data.menus.map((menu:any, index: number) => {
                     return (
-                        <div  className={classes.drawerPaper}>
+                        <div  className={classes.drawerPaper} key={index}>
                             <List key={index}>
                                 <ListItem button  onClick={()=> (index === open)?setOpen(-1):setOpen(index)} component={props => <Link {...props} to={`${menu.path}`}/>}>
                                     <ListItemIcon>

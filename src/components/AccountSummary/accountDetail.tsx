@@ -41,7 +41,6 @@ const useStyles = makeStyles(theme => ({
         minWidth: 650,
     },
     root: {
-        marginTop: '5%',
         padding: theme.spacing(4),
         paddingBottom: '2%',
         backgroundColor: '#ffffff',
