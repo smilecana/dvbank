@@ -49,7 +49,7 @@ export default function AccountSummary() {
     const accessGrant = useProtectedPath();
     const customer = useStore(store).customer;
     useEffect(() => {
-        console.log(customer);
+        console.log(customer,'test');
         filterAccounts(customer);
     }, []);
     const accounts = useStore(store).filterAccounts;
