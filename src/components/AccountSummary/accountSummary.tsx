@@ -12,6 +12,7 @@ import {dvTheme} from "../../constants/theme";
 import NewAccount from "./NewAccount/NewAccount";
 import {store} from '../store';
 import {useStore} from 'react-stores';
+import {filterAccounts} from "../common";
 
 const useStyles = makeStyles(theme => ({
     nested: {
@@ -43,8 +44,13 @@ const useStyles = makeStyles(theme => ({
 }));
 const theme = dvTheme;
 export default function AccountSummary() {
+
     const classes = useStyles();
     const accessGrant = useProtectedPath();
+    const customer = useStore(store).customer;
+    useEffect(() => {
+        filterAccounts(customer);
+    }, []);
     const accounts = useStore(store).filterAccounts;
     const accountTypes = ['chequing', 'savings', 'credit'];
     if (!accessGrant) {
@@ -81,8 +87,7 @@ export default function AccountSummary() {
                                                         </TableRow>
                                                     </>
                                                 )
-                                            })
-                                            }
+                                            })}
                                             <TableRow>
                                                 <TableCell align="right" className={classes.fBold}>Total Banking
                                                     Balance
