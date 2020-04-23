@@ -9,7 +9,18 @@ interface IStoreState {
 export const store = new Store<IStoreState>(
       {
         authorized: false,
-          customer: {}
+          customer: {
+              id: "",
+              firstName: "",
+              lastName: "",
+              province: "",
+              address: "",
+              postalCode: "",
+              email: "",
+              password: "",
+              phoneNumber: "",
+              accounts: [],
+          }
       },
       {
         persistence: true // This property does the magic
