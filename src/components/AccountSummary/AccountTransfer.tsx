@@ -19,9 +19,6 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputAdornment from '@material-ui/core/InputAdornment';
 
 
-
-
-
 function preventDefault(event: { preventDefault: () => void; }) {
     event.preventDefault();
 };
@@ -101,17 +98,6 @@ export default function AccountTransfer() {
 
     const classes = useStyles();
 
-    const [account, setAccount] = React.useState('40');
-
-    const inputLabel = React.useRef<HTMLLabelElement>(null);
-    const [labelWidth, setLabelWidth] = React.useState(0);
-    React.useEffect(() => {
-        setLabelWidth(inputLabel.current!.offsetWidth);
-    }, []);
-
-    // const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    //     setAccount(event.target.value as string);
-    // };
 
     const [values, setValues] = React.useState<State>({
         amount: '',
@@ -140,23 +126,6 @@ export default function AccountTransfer() {
             <Container maxWidth="lg" >
                 <ThemeProvider theme={theme} >
 
-                    <FormControl variant="outlined" className={classes.formControl}>
-                        <InputLabel ref={inputLabel} id="demo-simple-select-outlined-label">
-                            Select your account
-                    </InputLabel>
-                        <Select
-                            labelId="demo-simple-select-outlined-label"
-                            id="demo-simple-select-outlined"
-                            value={account}
-                            // onChange={handleChange}
-                            labelWidth={labelWidth}
-                        >
-                            <MenuItem value={40} >Chequing(00-33-99-00)$1000.99</MenuItem>
-                            <MenuItem value={10}>Saving(00-00-99-99)$3300.88 </MenuItem>
-                            <MenuItem value={20}>RESP(11-22-33-44)$2000.99</MenuItem>
-                            <MenuItem value={30}>Credit(11-33-55-77)$6666.12</MenuItem>
-                        </Select>
-                    </FormControl>
                     <div>
                         <Typography component="h3" variant="h5" className={classes.Title}>
                             Set up transfer details
