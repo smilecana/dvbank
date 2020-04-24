@@ -9,12 +9,11 @@ const useStyles = makeStyles((theme: Theme) =>
         }
     }),
 );
-export function AccountList(){
+export function AccountList(props){
     const classes = useStyles();
-    const [account, setAccount] = React.useState('');
 
     const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        setAccount(event.target.value as string);
+        props["accountArr"]["type"] = event.target.value;
     }
     return (
         <FormControl variant="outlined" className={classes.formControl}>
@@ -22,7 +21,6 @@ export function AccountList(){
             <Select
                 labelId="demo-simple-select-outlined-label"
                 id="demo-simple-select-outlined"
-                value={account}
                 onChange={handleChange}
                 label="Account Type"
             >

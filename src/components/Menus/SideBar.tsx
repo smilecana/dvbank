@@ -41,7 +41,7 @@ export default function SideBar() {
                     return (
                         <div  className={classes.drawerPaper}>
                             <List key={index}>
-                                <ListItem button  onClick={()=> (index === open)?setOpen(-1):setOpen(index)} component={props => <Link {...props} to={`${menu.path}`}/>}>
+                                <ListItem button  onClick={()=> (index === open)?setOpen(-1):setOpen(index)}>
                                     <ListItemIcon>
                                         <Icon>{menu.icon}/</Icon>
                                     </ListItemIcon>

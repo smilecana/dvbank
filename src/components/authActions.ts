@@ -15,7 +15,6 @@ export function logout() {
     store.setState({
     authorized: false
   });
-  console.log(store.state)
 }
 
 export function setFilterAccounts(accounts){

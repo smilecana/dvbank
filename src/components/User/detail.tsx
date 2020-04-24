@@ -9,7 +9,6 @@ import {useStore} from "react-stores";
 import {store} from '../store';
 import axios from "axios";
 import {setCustomer} from "../authActions";
-import {filterAccounts} from "../common";
 
 const theme = dvTheme;
 const useStyles = makeStyles((theme: Theme) =>
@@ -55,7 +54,6 @@ const Detail = () => {
         e.preventDefault();
         axios.put(`/customer/${customer['id']}`, user)
             .then((response) => {
-                console.log(user);
                 setCustomer(response.data);
                 alert('Saved!');
             }, (error) => {
