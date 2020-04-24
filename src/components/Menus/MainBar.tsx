@@ -8,6 +8,7 @@ import {store} from '../store';
 import {useStore} from 'react-stores';
 import {logout} from "../authActions";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -34,6 +35,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export const MainBar: React.FC = () => {
     const classes = useStyles();
     const authStoreState = useStore(store);
+    const history = useHistory();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -41,6 +43,10 @@ export const MainBar: React.FC = () => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+    const handleLogout=()=>{
+        logout();
+        history.push('/home');
+    }
     return (
         <>
             <AppBar className={classes.root}>
@@ -86,7 +92,7 @@ export const MainBar: React.FC = () => {
                                         <MenuItem onClick={handleClose} component={props => <Link {...props}
                                                                                                   to={`/accounts/summary`}/>}>My
                                             Accounts</MenuItem>
-                                        <MenuItem onClick={logout}>Logout</MenuItem>
+                                        <MenuItem onClick={handleLogout}>Logout</MenuItem>
                                     </Menu>
                                 </Typography>
                             )}

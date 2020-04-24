@@ -19,6 +19,7 @@ export function AccountList(props){
         <FormControl variant="outlined" className={classes.formControl}>
             <InputLabel id="demo-simple-select-outlined-label">Account Type</InputLabel>
             <Select
+                value={props["accountArr"]["type"]}
                 labelId="demo-simple-select-outlined-label"
                 id="demo-simple-select-outlined"
                 onChange={handleChange}

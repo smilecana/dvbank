@@ -123,10 +123,9 @@ function HorizontalLabelPositionBelowStepper() {
     const openAccount = () => {
         const  number = (Math.floor(Math.random() * 1000) + 1000).toString();
         account['number'] = number;
-        console.log(account);
         axios.post(`/account/${customer['id']}/addAccount`, account)
         .then((response) => {
-            alert('Success');
+            alert('Your account is opend!');
             setCustomer(response.data);
             window.location.reload();
         }, (error) => {
