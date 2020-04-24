@@ -22,6 +22,7 @@ const useStyles = makeStyles(theme => ({
         borderRadius: '5px',
         border: '1px solid #eeeeee',
         marginLeft: theme.spacing(35),
+        width: '75%'
     },
     Title: {
         marginTop: theme.spacing(4),
@@ -87,7 +88,7 @@ export default function AccountSummary() {
                                                         ):''}
                                                     </>
                                                 )
-                                            })} */}
+                                            })} 
                                             <TableRow>
                                                 <TableCell align="right" className={classes.fBold}>Total Banking
                                                     Balance

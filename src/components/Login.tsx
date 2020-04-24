@@ -3,10 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from "@material-ui/core/Grid";
 import { ThemeProvider } from '@material-ui/core/styles';
 import {useState} from 'react';
-import { CssBaseline, Container, Typography, TextField, Button, Link, Divider } from '@material-ui/core';
+import { CssBaseline, Container, Typography, TextField, Button,  Divider } from '@material-ui/core';
 import { login, setCustomer } from './authActions';
 import {dvTheme} from "../constants/theme";
 import axios from "axios";
+import { Link } from 'react-router-dom';
 
 
 const theme = dvTheme;
@@ -102,10 +103,11 @@ export default function Login() {
                                     />
 
                                     <Grid container>
-                                        <Grid item xs>
-                                            <Link href="#" variant="body2">
+                                        <Grid item xs>                                            
+                                            <Typography variant="body2" color="primary" className={classes.title}>
                                                 Forgot password?
-                                            </Link>
+                                            </Typography>
+                                                
                                         </Grid>
 
                                     </Grid>
@@ -134,25 +136,25 @@ export default function Login() {
                                     DV Bank Card Holder:
                                 </Typography>
                                 <p>To access DV Online Banking you will need your DV Bank Card and the account numbers linked to your card.</p>
-                                <Button
+                                <Link to="/register"><Button
                                     variant="outlined"
                                     color="secondary"
-                                    href="/register"
                                 >
                                     Register
-                                </Button>
+                                </Button></Link>
                                 <Typography variant="h6" className={classes.subtitle}>
                                     Sign and register help:
                                 </Typography>
                                 <Grid container>
                                     <Grid item xs>
-                                        <Link href="#" variant="caption">
-                                            Custmer Service
-                                            </Link>
-                                        <br></br>
-                                        <Link href="#" variant="caption">
-                                            Forgot ID / password?
-                                            </Link>
+                                    <Typography variant="caption" color="primary" className={classes.subtitle}>
+                                    Custmer Service
+                                    </Typography>
+                                    <br/>
+                                    <Typography variant="caption" color="primary" className={classes.subtitle}>
+                                    Forgot ID / password?
+                                    </Typography>
+                                       
                                     </Grid>
 
                                 </Grid>

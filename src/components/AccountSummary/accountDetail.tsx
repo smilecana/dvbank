@@ -66,7 +66,15 @@ export default function AccountDetail() {
 
     const classes = useStyles();
     //account data
-    const customerAccounts = useStore(store).customer['accounts'];
+    var customerAccounts = useStore(store).customer['accounts'];
+    // new account with no data
+    var tempDate = new Date();
+    var date = tempDate.getMonth()+1 + '/'+ tempDate.getDate() +'/'+tempDate.getFullYear() ;
+
+    var dataOrg = [{'number':'xxxx','type':'chequing','balance':'0','creation date':date,'transactions':[]},
+                    {'number':'xxxx','type':'saving','balance':'0','creation date':date, 'transactions':[]},
+                    {'number':'xxxx','type':'credit','balance':'0','creation date':date,'creditLimit':1000, 'transactions':[]}]
+    if(!customerAccounts) customerAccounts=dataOrg;
 
     // pagenation
     const [page, setPage] = React.useState(0);
@@ -126,7 +134,7 @@ export default function AccountDetail() {
                             <Table className={classes.container} aria-label="simple table">
 
                                 <TableBody>
-                                    {Object.keys(customerAccounts[account])
+                                    {(Object.keys(customerAccounts[account])
                                         .filter(item => {
                                             // filter creditLimit if not a credit card
                                             if (customerAccounts[account]['type'] !== "credit") {
@@ -146,11 +154,11 @@ export default function AccountDetail() {
                                                     <TableCell align="right">{(row === "balance") ? "$" + customerAccounts[account][row] : customerAccounts[account][row]}</TableCell>
 
                                                 </TableRow>)
-
                                             )
-                                        })}
-
-
+                                            
+                                        })
+                                    )}
+                                    
                                 </TableBody>
                             </Table>
 
@@ -181,9 +189,9 @@ export default function AccountDetail() {
                                                 <TableCell align="right">{row.amount}</TableCell>
                                                 {/* <TableCell align="right">{row.Balance}</TableCell> */}
 
-                                            </TableRow>
-                                        );
-                                    })}
+                                             </TableRow>
+                                         );} 
+                                    )}
 
                                 </TableBody>
                             </Table>
