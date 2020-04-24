@@ -22,7 +22,11 @@ export const store = new Store<IStoreState>(
             phoneNumber: "",
             accounts: [],
         },
-        filterAccounts: {}
+        filterAccounts: {
+            saving:[],
+            chequing:[],
+            credit:[],
+        }
     },
     {
         persistence: true // This property does the magic

@@ -1,14 +1,18 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import {Button, FormControl, InputLabel, MenuItem, Select} from "@material-ui/core";
+import {Button} from "@material-ui/core";
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Typography from '@material-ui/core/Typography';
 import {AccountList} from "./AccountList";
+import axios from "axios";
+import {useStore} from "react-stores";
+import {store} from "../../store";
+import {setCustomer} from "../../authActions";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -37,6 +41,9 @@ const useStyles = makeStyles((theme: Theme) =>
             marginTop: theme.spacing(1),
             marginBottom: theme.spacing(1),
         },
+        final: {
+            textAlign: 'center'
+        }
     }),
 );
 
@@ -85,10 +92,10 @@ function getSteps() {
     return ['Select available account ...', 'Please check the terms and conditions.', 'Your last step!! Create an account!!!'];
 }
 
-function getStepContent(stepIndex: number) {
+function getStepContent(stepIndex:number, account:any) {
     switch (stepIndex) {
         case 0:
-            return <AccountList/>;
+            return <AccountList accountArr={account}/>;
         case 1:
             return '';
         case 2:
@@ -101,6 +108,8 @@ function getStepContent(stepIndex: number) {
 function HorizontalLabelPositionBelowStepper() {
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
+    const customer = useStore(store).customer;
+    const [account, setAccount] = useState<any>({"number":"","type":"chequing","balance":0,"creationDate":"27/04/2020","status":"open","creditLimit":"","transactions":[]});
     const steps = getSteps();
 
     const handleNext = () => {
@@ -111,8 +120,17 @@ function HorizontalLabelPositionBelowStepper() {
         setActiveStep(prevActiveStep => prevActiveStep - 1);
     };
 
-    const handleReset = () => {
-        setActiveStep(0);
+    const openAccount = () => {
+        const  number = (Math.floor(Math.random() * 1000) + 1000).toString();
+        account['number'] = number;
+        axios.post(`/account/${customer['id']}/addAccount`, account)
+        .then((response) => {
+            alert('Your account is opend!');
+            setCustomer(response.data);
+            window.location.reload();
+        }, (error) => {
+            console.log(error);
+        });
     };
 
     return (
@@ -126,13 +144,12 @@ function HorizontalLabelPositionBelowStepper() {
             </Stepper>
             <div>
                 {activeStep === steps.length ? (
-                    <div>
-                        <Typography className={classes.instructions}>All steps completed</Typography>
-                        <Button onClick={handleReset}>Reset</Button>
+                    <div className={classes.final}>
+                        <Button variant="contained"  color="primary"  onClick={openAccount}>Open</Button>
                     </div>
                 ) : (
                     <div>
-                        <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
+                        <Typography className={classes.instructions}>{getStepContent(activeStep, account)}</Typography>
                         <div>
                             <Button
                                 disabled={activeStep === 0}

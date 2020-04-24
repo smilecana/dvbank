@@ -44,19 +44,16 @@ const useStyles = makeStyles(theme => ({
 }));
 const theme = dvTheme;
 export default function AccountSummary() {
-
     const classes = useStyles();
     const accessGrant = useProtectedPath();
     const customer = useStore(store).customer;
     useEffect(() => {
-        console.log(customer,'test');
         filterAccounts(customer);
     }, []);
     const accounts = useStore(store).filterAccounts;
     const accountTypes = ['chequing', 'savings', 'credit'];
-    if (!accessGrant) {
-        return <Redirect to="/signIn"/>;
-    }
+    if(!accessGrant)
+        return(<Redirect to="/signIn"/>);
     return (
         <ThemeProvider theme={theme}>
             <Container maxWidth={'lg'} className={classes.nested}>
@@ -77,15 +74,17 @@ export default function AccountSummary() {
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
-                                            {/* {accounts[at].map(account => {
-                                                balance += parseFloat(account['balance']);
+                                            {accounts[at].map(account => {
+                                                balance += parseFloat((account['balance'] === '')?0:account['balance']);
                                                 return (
                                                     <>
-                                                        <TableRow
-                                                            key={account['number'] ? account['number'] : 0}>
-                                                            <TableCell>{account['number'] ? account['number'] : 0}</TableCell>
-                                                            <TableCell align="right">$ {account['balance'] ? account['balance'] : 0}</TableCell>
-                                                        </TableRow>
+                                                        {(!!account['number']) ? (
+                                                            <TableRow
+                                                                key={account['number'] ? account['number'] : 0}>
+                                                                <TableCell>{account['number'] ? account['number'] : ''}</TableCell>
+                                                                <TableCell align="right">$ {account['balance'] ? account['balance'] : 0}</TableCell>
+                                                            </TableRow>
+                                                        ):''}
                                                     </>
                                                 )
                                             })} */}

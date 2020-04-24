@@ -54,6 +54,7 @@ export default function Login() {
         e.preventDefault();
         axios.post('/customer/login', {email:email, password:password})
             .then((response) => {
+
                 login();
                 setCustomer(response.data);
                 window.location.href='/accounts/summary';

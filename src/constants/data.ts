@@ -9,7 +9,7 @@ export default {
         },
         {
             "title": "Accounts",
-            "path": "/accounts",
+            "path": "/accounts/summary",
             "icon": "account_balance",
             "key": "ACCOUNTS",
             "items": [

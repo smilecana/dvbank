@@ -68,7 +68,7 @@ export default function Register(){
         e.preventDefault();
         axios.post('/customer/addCustomer', user)
         .then((response) => {
-            alert("success");
+            alert("Success");
             history.push('/signIn');
         }, (error) => {
             console.log(error);
