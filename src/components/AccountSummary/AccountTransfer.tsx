@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import Link from '@material-ui/core/Link';
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { Typography, Container, TablePagination, Grid, Tooltip, Button } from '@material-ui/core';
+import { Typography, Container, TablePagination, Grid, Tooltip, Button, TextField, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
-import Input from '@material-ui/core/Input';
 import FilledInput from '@material-ui/core/FilledInput';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import { useStore } from 'react-stores';
+import { store } from '../store';
+import ConfirmDialog from './TransferConfirm';
+
 
 
 function preventDefault(event: { preventDefault: () => void; }) {
@@ -41,8 +42,8 @@ const useStyles = makeStyles(theme => ({
         fontWeight: 'bold'
     },
     formControl: {
-        margin: theme.spacing(1),
-        minWidth: '70%',
+        // margin: theme.spacing(1),
+        width: '50%',
     },
     table: {
         minWidth: 650,
@@ -56,7 +57,7 @@ const useStyles = makeStyles(theme => ({
         marginLeft: theme.spacing(35),
     },
     container: {
-        maxHeight: 440,
+        // maxHeight: 440,
     },
     subDetailTitle: {
         padding: "0px 10px",
@@ -65,8 +66,8 @@ const useStyles = makeStyles(theme => ({
         fontWeight: "bold",
         padding: "0px 10px",
     },
-    margin: {
-        
+    amount: {
+        width: "50%"
     }
 
 }));
@@ -85,116 +86,273 @@ const theme = createMuiTheme({
     },
 });
 
-interface State {
-    amount: string;
-    password: string;
-    weight: string;
-    weightRange: string;
-    showPassword: boolean;
-    account: string;
-  }
+
+// how often times
+const often = ['Once', 'Every week', 'Every two weeks', 'Every month', 'Every three months'];
 
 export default function AccountTransfer() {
 
     const classes = useStyles();
 
-
-    const [values, setValues] = React.useState<State>({
+    const [values, setValues] = React.useState({
         amount: '',
-        password: '',
-        weight: '',
-        weightRange: '',
-        showPassword: false,
-        account: '40',
-      });
+        fromAccountIndex: 'select',
+        toAccountIndex: 'select',
+        transferDate: '',
+        howOften: 'Once',
+        accountId: useStore(store).customer['id'],
+    });
+    // show comfirm dialog
+    const [open, setOpen] = React.useState(false);
+
+
+    let handleChange = (evt) => {
+        const value = evt.target.value;
+        setValues({
+            ...values,
+            [evt.target.name]: value
+        });
+    }
+
+    let handleClick = ()=>{
+        setOpen(true);
+    }
+    // account info by id
+    let getAccountInfo = (index) =>{
+        if(index === 'select') {
+            return ''
+        }
+        else{
+            return customerAccounts[index]['type'] +'-'+ customerAccounts[index]['number'] +' $'+ customerAccounts[index]['balance'];
+        }
+    }
+
+
+    //account data
+    var customerAccounts = useStore(store).customer['accounts'];
+
+    const inputLabel = React.useRef<HTMLLabelElement>(null);
+    const [labelWidth, setLabelWidth] = React.useState(0);
+    React.useEffect(() => {
+        // setLabelWidth(inputLabel.current!.offsetWidth);
+    }, []);
+
     
-      const handleChange = (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValues({ ...values, [prop]: event.target.value });
-      };
-    
-      const handleClickShowPassword = () => {
-        setValues({ ...values, showPassword: !values.showPassword });
-      };
-    
-      const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-      };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+    const handleSubmit = () => {
+        setOpen(false);
+    };
+
 
     return (
         <React.Fragment>
+            
             <div className={classes.root}>
-            <Container maxWidth="lg" >
-                <ThemeProvider theme={theme} >
+                <Container maxWidth="lg" >
+                    <ThemeProvider theme={theme} >
 
-                    <div>
-                        <Typography component="h3" variant="h5" className={classes.Title}>
-                            Set up transfer details
-                        </Typography>
-                        <TableContainer component={Paper}>
-                            <Table className={classes.table} aria-label="simple table">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>From:</TableCell>
-                                        <TableCell align="right">dropdown</TableCell>
+                        <div>
+                            <Typography component="h3" variant="h5" className={classes.Title}>
+                                Set up transfer details
+                            </Typography>
+                            <TableContainer component={Paper}>
+                                <Table className={classes.table} aria-label="simple table">
+                                    <TableBody>
+                                        <TableRow>
+                                            <TableCell>From:</TableCell>
+                                            <TableCell align="right">
+                                                <FormControl variant="outlined" className={classes.formControl}>
 
-                                    </TableRow>
-                                    <TableRow >
-                                        <TableCell component="th" scope="row">
-                                            To:
+                                                    <Select
+                                                        labelId="demo-simple-select-outlined-label"
+                                                        id="demo-simple-select-outlined"
+                                                        name="fromAccountIndex"
+                                                        // className={classes.selector}
+                                                        value={values.fromAccountIndex}
+                                                        onChange={handleChange}
+                                                        labelWidth={labelWidth}
+
+                                                    >
+                                                        <MenuItem value="select">Select an account</MenuItem>
+                                                        {customerAccounts.map((item, index) => {
+                                                            return (<MenuItem value={index}>
+                                                                {item['type']}-({item['number']}) ${item['balance']}
+                                                            </MenuItem>)
+                                                        })}
+
+                                                    </Select>
+                                                </FormControl>
                                             </TableCell>
-                                        <TableCell align="right">dropdown</TableCell>
-                                    </TableRow>
-                                    <TableRow >
-                                        <TableCell component="th" scope="row">
-                                            Amount:
+
+                                        </TableRow>
+                                        <TableRow >
+                                            <TableCell component="th" scope="row">
+                                                To:
                                             </TableCell>
-                                        <TableCell align="right">
-                                        <FormControl fullWidth className={classes.margin} variant="filled">
-                                        <InputLabel htmlFor="filled-adornment-amount">Amount</InputLabel>
-                                        <FilledInput
-                                            id="filled-adornment-amount"
-                                            value={values.amount}
-                                            onChange={handleChange('amount')}
-                                            startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                                        />
-                                        </FormControl>
-                                        </TableCell>
-                                    </TableRow>
-                                    <TableRow >
-                                        <TableCell component="th" scope="row">
-                                            How often:
+                                            <TableCell align="right">
+
+                                                <FormControl variant="outlined" className={classes.formControl}>
+
+                                                    <Select
+                                                        labelId="demo-simple-select-outlined-label"
+                                                        id="demo-simple-select-outlined"
+                                                        name="toAccountIndex"
+                                                        // className={classes.selector}
+                                                        value={values.toAccountIndex}
+                                                        onChange={handleChange}
+                                                        labelWidth={labelWidth}
+                                                    >
+                                                        <MenuItem value="select">Select an account</MenuItem>
+                                                        {customerAccounts.map((item, index) => {
+                                                            return (<MenuItem value={index}>
+                                                                {item['type']}-({item['number']}) ${item['balance']}
+                                                            </MenuItem>)
+                                                        })}
+
+                                                    </Select>
+                                                </FormControl>
                                             </TableCell>
-                                        <TableCell align="right">dropdown</TableCell>
-                                    </TableRow>
-                                    <TableRow >
-                                        <TableCell component="th" scope="row">
-                                            Transfer date:
+                                        </TableRow>
+                                        <TableRow >
+                                            <TableCell component="th" scope="row">
+                                                Amount:
                                             </TableCell>
-                                        <TableCell align="right">dropdown</TableCell>
-                                    </TableRow>
+                                            <TableCell align="right">
+                                                <FormControl fullWidth className={classes.amount} variant="filled">
+                                                    <InputLabel htmlFor="filled-adornment-amount">Amount</InputLabel>
+                                                    <FilledInput
+                                                        id="filled-adornment-amount"
+                                                        name="amount"
+                                                        value={values.amount}
+                                                        onChange={handleChange}
+                                                        startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                                                    />
+                                                </FormControl>
+                                            </TableCell>
+                                        </TableRow>
+                                        <TableRow >
+                                            <TableCell component="th" scope="row">
+                                                How often:
+                                            </TableCell>
+                                            <TableCell align="right">
+
+                                                <FormControl variant="outlined" className={classes.formControl}>
+
+                                                    <Select
+                                                        labelId="demo-simple-select-outlined-label"
+                                                        id="demo-simple-select-outlined"
+                                                        name="howOften"
+                                                        // className={classes.selector}
+                                                        value={values.howOften}
+                                                        onChange={handleChange}
+                                                        labelWidth={labelWidth}
+                                                    >
+                                                        {often.map((item, index) => {
+                                                            return (<MenuItem value={item}>
+                                                                {item}
+                                                            </MenuItem>)
+                                                        })}
+
+                                                    </Select>
+                                                </FormControl>
+                                            </TableCell>
+                                        </TableRow>
+                                        <TableRow >
+                                            <TableCell component="th" scope="row">
+                                                Transfer date:
+                                            </TableCell>
+                                            <TableCell align="right">
+                                                <form className={classes.container} noValidate>
+                                                    <TextField
+                                                        id="demo-simple-select-outlined"
+                                                        name="transferDate"
+                                                        value={values.transferDate}
+                                                        onChange={handleChange}
+                                                        // label="Birthday"
+                                                        type="date"
+                                                        // className={classes.textField}
+                                                        InputLabelProps={{
+                                                            shrink: true,
+                                                        }}
+                                                    />
+                                                </form>
+
+                                            </TableCell>
+                                        </TableRow>
                                     
-                                </TableHead>
-                                
-                                <TableBody>
-                                    
+
                                         <TableRow >
                                             <TableCell component="th" scope="row"></TableCell>
                                             <TableCell align="right">
-                                                <Button variant="contained" color="secondary">
+                                                <Button variant="contained" color="primary" onClick={handleClick}>
                                                     Next
                                                 </Button>
                                             </TableCell>
                                         </TableRow>
-                                 
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </div>
 
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </div>
 
-                </ThemeProvider>
-            </Container>
+                        {/* comfirm dialog */}
+                        <div>
+                            <Dialog
+                                open={open}
+                                onClose={handleClose}
+                                aria-labelledby="alert-dialog-title"
+                                aria-describedby="alert-dialog-description"
+                            >
+                                <DialogTitle id="alert-dialog-title">{"TRANSFERS – VERIFICATION"}</DialogTitle>
+                                
+                                <DialogContent>
+                                <DialogContentText id="alert-dialog-description">
+                                You are about to make the following transfer. Do you want to continue?
+                                </DialogContentText>
+
+                                <Table  aria-label="simple table">
+                                    <TableHead>
+                                        
+                                        <TableRow>
+                                            <TableCell>From:</TableCell>
+                                            <TableCell align="right">{getAccountInfo(values.fromAccountIndex)}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell>To:</TableCell>
+                                            <TableCell align="right">{getAccountInfo(values.toAccountIndex)}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell>Amount:</TableCell>
+                                                <TableCell align="right">${values.amount}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell>How often:</TableCell>
+                                            <TableCell align="right">{values.howOften}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell>Transfer Date:</TableCell>
+                                            <TableCell align="right">{values.transferDate}</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                </Table>
+                                </DialogContent>
+                                <DialogActions>
+                                <Button onClick={handleClose} color="secondary">
+                                    Cancel
+                                </Button>
+                                <Button onClick={handleSubmit} color="primary" autoFocus>
+                                    Confirm
+                                </Button>
+                                </DialogActions>
+                            </Dialog>
+                            </div>
+                    </ThemeProvider>
+                </Container>
             </div>
+            
         </React.Fragment>
     )
 }
