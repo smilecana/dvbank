@@ -23,11 +23,7 @@ export default {
                     "path": "/accounts/details",
                     "key": "ACCOUNTS_DETAILS",
                 },
-                {
-                    "title": "Account Document",
-                    "path": "/accounts/document",
-                    "key": "ACCOUNTS_DOCUMENT",
-                }
+                
             ]
         },
         {
@@ -48,6 +44,20 @@ export default {
                     "key": "TRANSFER_HISTORY",
                 }
             ]
-        }
+        },
+        {
+            "title": "Credit Bill Payment",
+            "path": "/creditbillpayment",
+            "icon": "account_balance_wallet",
+            "key": "CREDIT_BILL_PAYMENT",
+            "items": [
+                {
+                    "title": "Credit Payment",
+                    "path": "/creditbillpayment",
+                    "key": "Credit Payment",
+
+                },
+            ]
+        },
     ]
 }

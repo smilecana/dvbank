@@ -5,7 +5,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { Typography, Container, TablePagination } from '@material-ui/core';
+import { Typography, Container, TablePagination, Button } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -13,7 +13,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import { dvTheme } from "../../constants/theme";
 import { store } from '../store';
 import { useStore } from 'react-stores';
-
+import { Link } from 'react-router-dom';
+import { FormatAlignCenter } from '@material-ui/icons';
 
 
 const useStyles = makeStyles(theme => ({
@@ -57,7 +58,8 @@ const useStyles = makeStyles(theme => ({
     subDetailContent: {
         fontWeight: "bold",
         padding: "0px 10px",
-    }
+    },
+
 
 }));
 
@@ -127,7 +129,7 @@ export default function AccountDetail() {
 
                             </Select>
                         </FormControl>
-                        <div>
+                        <div >
                             <Typography component="h3" variant="h5" className={classes.Title}>
                                 Account Details
                             </Typography>
@@ -161,8 +163,14 @@ export default function AccountDetail() {
                                     
                                 </TableBody>
                             </Table>
-
                         </div>
+                        {(customerAccounts[account]['type']==='credit')? (
+                                        <Link to="/creditbillpayment">
+                                            <Button  variant="contained" color="primary">Bill Payment</Button>
+                                        </Link>
+                            ):''}
+
+ 
 
                         <div>
                             <Typography component="h3" variant="h5" className={classes.Title}>
@@ -204,7 +212,7 @@ export default function AccountDetail() {
                                 onChangePage={handleChangePage}
                                 onChangeRowsPerPage={handleChangeRowsPerPage}
                             />
-                        </div>
+                    </div>
 
                     </ThemeProvider>
                 </Container>

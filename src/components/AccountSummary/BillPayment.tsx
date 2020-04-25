@@ -9,11 +9,8 @@ import { Typography, Container, TablePagination, Grid, Tooltip, Button, TextFiel
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
-import FilledInput from '@material-ui/core/FilledInput';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import { useStore } from 'react-stores';
 import { store } from '../store';
 
@@ -30,9 +27,7 @@ const useStyles = makeStyles(theme => ({
         borderLeft: "3px solid green",
         paddingLeft: "10px"
     },
-    Pointer: {
-        cursor: "pointer",
-    },
+    
     tableHead: {
         backgroundColor: '#cccccc',
         height: '3em',
@@ -55,19 +50,7 @@ const useStyles = makeStyles(theme => ({
         flexWrap: 'wrap',
         marginLeft: theme.spacing(35),
     },
-    container: {
-        // maxHeight: 440,
-    },
-    subDetailTitle: {
-        padding: "0px 10px",
-    },
-    subDetailContent: {
-        fontWeight: "bold",
-        padding: "0px 10px",
-    },
-    amount: {
-        width: "100%"
-    }
+    
 
 }));
 
@@ -86,24 +69,21 @@ const theme = createMuiTheme({
 });
 
 
-// how often times
-const often = ['Once', 'Every week', 'Every two weeks', 'Every month', 'Every three months'];
-
-export default function AccountTransfer() {
+export default function BillPayment() {
 
     const classes = useStyles();
 
+    //account data
+    var customerAccounts = useStore(store).customer['accounts'];
+
     const [values, setValues] = React.useState({
         amount: '',
-        fromAccountIndex: 'select',
-        toAccountIndex: 'select',
-        transferDate: '',
-        howOften: 'Once',
+        payFromIndex: 'select',
+        paymentDate: '',
         accountId: useStore(store).customer['id'],
     });
     // show comfirm dialog
     const [open, setOpen] = React.useState(false);
-
 
     let handleChange = (evt) => {
         const value = evt.target.value;
@@ -115,7 +95,15 @@ export default function AccountTransfer() {
 
     let handleClick = ()=>{
         setOpen(true);
-    }
+        console.log(values)
+    }  
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+    const handleSubmit = () => {
+        setOpen(false);
+    };
     // account info by id
     let getAccountInfo = (index) =>{
         if(index === 'select') {
@@ -127,25 +115,6 @@ export default function AccountTransfer() {
     }
 
 
-    //account data
-    var customerAccounts = useStore(store).customer['accounts'];
-
-    const inputLabel = React.useRef<HTMLLabelElement>(null);
-    const [labelWidth, setLabelWidth] = React.useState(0);
-    React.useEffect(() => {
-        // setLabelWidth(inputLabel.current!.offsetWidth);
-    }, []);
-
-    
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-    const handleSubmit = () => {
-        setOpen(false);
-    };
-
-
     return (
         <React.Fragment>
             
@@ -155,57 +124,40 @@ export default function AccountTransfer() {
 
                         <div>
                             <Typography component="h3" variant="h5" className={classes.Title}>
-                                Set up transfer details
+                                Credit Bill Payment
                             </Typography>
                             <TableContainer component={Paper}>
                                 <Table className={classes.table} aria-label="simple table">
                                     <TableBody>
                                         <TableRow>
-                                            <TableCell>From:</TableCell>
+                                            <TableCell>Current balance:</TableCell>
                                             <TableCell style={{width: '40%'}}>
-                                                <FormControl variant="outlined" className={classes.formControl}>
-
-                                                    <Select
-                                                        labelId="demo-simple-select-outlined-label"
-                                                        id="demo-simple-select-outlined"
-                                                        name="fromAccountIndex"
-                                                        // className={classes.selector}
-                                                        value={values.fromAccountIndex}
-                                                        onChange={handleChange}
-                                                        labelWidth={labelWidth}
-
-                                                    >
-                                                        <MenuItem value="select">Select an account</MenuItem>
-                                                        {customerAccounts.map((item, index) => {
-                                                            return (<MenuItem value={index}>
-                                                                {item['type']}-({item['number']}) ${item['balance']}
-                                                            </MenuItem>)
-                                                        })}
-
-                                                    </Select>
-                                                </FormControl>
+                                                $ {customerAccounts[2]['balance']}<br></br>
+                                                Credit Card {customerAccounts[2]['number']}
                                             </TableCell>
 
                                         </TableRow>
                                         <TableRow >
                                             <TableCell component="th" scope="row">
-                                                To:
+                                                Pay from:
                                             </TableCell>
-                                            <TableCell >
+                                            <TableCell style={{width: '40%'}}>
 
                                                 <FormControl variant="outlined" className={classes.formControl}>
 
                                                     <Select
                                                         labelId="demo-simple-select-outlined-label"
                                                         id="demo-simple-select-outlined"
-                                                        name="toAccountIndex"
+                                                        name="payFromIndex"
                                                         // className={classes.selector}
-                                                        value={values.toAccountIndex}
+                                                        value={values.payFromIndex}
                                                         onChange={handleChange}
-                                                        labelWidth={labelWidth}
+                                                        // labelWidth={payFromIndex}
                                                     >
                                                         <MenuItem value="select">Select an account</MenuItem>
-                                                        {customerAccounts.map((item, index) => {
+                                                        {customerAccounts
+                                                        .filter(item=>item['type']!=="credit")
+                                                        .map((item, index) => {
                                                             return (<MenuItem value={index}>
                                                                 {item['type']}-({item['number']}) ${item['balance']}
                                                             </MenuItem>)
@@ -217,71 +169,52 @@ export default function AccountTransfer() {
                                         </TableRow>
                                         <TableRow >
                                             <TableCell component="th" scope="row">
-                                                Amount:
+                                                Payment Amount:
                                             </TableCell>
-                                            <TableCell >
-                                                <FormControl fullWidth className={classes.amount} variant="filled">
-                                                    <InputLabel htmlFor="filled-adornment-amount">Amount</InputLabel>
-                                                    <FilledInput
-                                                        id="filled-adornment-amount"
-                                                        name="amount"
-                                                        value={values.amount}
-                                                        onChange={handleChange}
-                                                        startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                                                    />
-                                                </FormControl>
-                                            </TableCell>
-                                        </TableRow>
-                                        <TableRow >
-                                            <TableCell component="th" scope="row">
-                                                How often:
-                                            </TableCell>
-                                            <TableCell >
-
-                                                <FormControl variant="outlined" className={classes.formControl}>
-
-                                                    <Select
-                                                        labelId="demo-simple-select-outlined-label"
-                                                        id="demo-simple-select-outlined"
-                                                        name="howOften"
-                                                        // className={classes.selector}
-                                                        value={values.howOften}
-                                                        onChange={handleChange}
-                                                        labelWidth={labelWidth}
-                                                    >
-                                                        {often.map((item, index) => {
-                                                            return (<MenuItem value={item}>
-                                                                {item}
-                                                            </MenuItem>)
-                                                        })}
-
-                                                    </Select>
-                                                </FormControl>
+                                            <TableCell>
+                                            <label>
+                                                
+                                                <input
+                                                    type="radio"
+                                                    name="amount"
+                                                    value="10"
+                                                    checked={values.amount === "10"}
+                                                    onChange={handleChange}
+                                                />
+                                                $10.00 (Minimum Payment)
+                                                </label>
+                                                <br></br>
+                                                <label>
+                                                
+                                                <input
+                                                    type="radio"
+                                                    name="amount"
+                                                    value={customerAccounts[2]['balance']}
+                                                    checked={values.amount === customerAccounts[2]['balance']}
+                                                    onChange={handleChange}
+                                                />
+                                                ${customerAccounts[2]['balance']} (Current Balance)
+                                                </label>
                                             </TableCell>
                                         </TableRow>
                                         <TableRow >
                                             <TableCell component="th" scope="row">
-                                                Transfer date:
+                                                Payment date:
                                             </TableCell>
                                             <TableCell >
-                                                <form className={classes.container} noValidate>
                                                     <TextField
                                                         id="demo-simple-select-outlined"
-                                                        name="transferDate"
-                                                        value={values.transferDate}
+                                                        name="paymentDate"
+                                                        value={values.paymentDate}
                                                         onChange={handleChange}
-                                                        // label="Birthday"
                                                         type="date"
-                                                        // className={classes.textField}
                                                         InputLabelProps={{
                                                             shrink: true,
                                                         }}
                                                     />
-                                                </form>
 
                                             </TableCell>
                                         </TableRow>
-                                    
 
                                         <TableRow >
                                             <TableCell component="th" scope="row"></TableCell>
@@ -305,35 +238,35 @@ export default function AccountTransfer() {
                                 aria-labelledby="alert-dialog-title"
                                 aria-describedby="alert-dialog-description"
                             >
-                                <DialogTitle id="alert-dialog-title">{"TRANSFERS – VERIFICATION"}</DialogTitle>
+                                <DialogTitle id="alert-dialog-title">{"CREDIT BILL PAYMENT – VERIFICATION"}</DialogTitle>
                                 
                                 <DialogContent>
                                 <DialogContentText id="alert-dialog-description">
-                                You are about to make the following transfer. Do you want to continue?
+                                Please confirm your payment details.
                                 </DialogContentText>
 
                                 <Table  aria-label="simple table">
                                     <TableHead>
                                         
                                         <TableRow>
-                                            <TableCell>From:</TableCell>
-                                            <TableCell align="right">{getAccountInfo(values.fromAccountIndex)}</TableCell>
+                                            <TableCell>Current Balance:</TableCell>
+                                            <TableCell align="right">
+                                                $ {customerAccounts[2]['balance']}<br></br>
+                                                Credit Card {customerAccounts[2]['number']}
+                                            </TableCell>
                                         </TableRow>
                                         <TableRow>
-                                            <TableCell>To:</TableCell>
-                                            <TableCell align="right">{getAccountInfo(values.toAccountIndex)}</TableCell>
+                                            <TableCell>Pay From:</TableCell>
+                                            <TableCell align="right">{getAccountInfo(values.payFromIndex)}</TableCell>
                                         </TableRow>
                                         <TableRow>
-                                            <TableCell>Amount:</TableCell>
-                                                <TableCell align="right">${values.amount}</TableCell>
+                                            <TableCell>Payment Amount:</TableCell>
+                                            <TableCell align="right">$ {values.amount}</TableCell>
                                         </TableRow>
+                                        
                                         <TableRow>
-                                            <TableCell>How often:</TableCell>
-                                            <TableCell align="right">{values.howOften}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell>Transfer Date:</TableCell>
-                                            <TableCell align="right">{values.transferDate}</TableCell>
+                                            <TableCell>Payment Date:</TableCell>
+                                            <TableCell align="right">{values.paymentDate}</TableCell>
                                         </TableRow>
                                     </TableHead>
                                 </Table>

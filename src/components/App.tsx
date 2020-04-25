@@ -17,6 +17,7 @@ import AccountDetail from "./AccountSummary/accountDetail";
 import Detail from "./User/detail"
 import { store } from './store';
 import AccountTransfer from "./AccountSummary/AccountTransfer";
+import BillPayment from "./AccountSummary/BillPayment";
 import SideBar from "./Menus/SideBar";
 import { MainBar } from "./Menus/MainBar";
 import Product from "./Basic/Product";
@@ -51,6 +52,7 @@ export default function App() {
                 <Route path="/accounts" component={AccountSummary}/>
                 <Route path="/transfer/new" component={AccountTransfer}/>
                 <Route path="/transfer" component={AccountTransfer}/>
+                <Route path="/creditbillpayment" component={BillPayment} />
 
                 <Route path="/">
                     <Home/>
