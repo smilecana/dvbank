@@ -1,13 +1,14 @@
-import React, {useState, useEffect } from 'react';
-import {Divider} from '@material-ui/core';
-import { Button , FormControlLabel, Checkbox, Grid, Typography} from '@material-ui/core';
-import {makeStyles} from '@material-ui/core/styles';
+import React, { useState, useEffect } from 'react';
+import { Divider, Dialog, DialogTitle, DialogContent, DialogContentText, Table, TableHead, TableRow, TableCell, DialogActions } from '@material-ui/core';
+import { Button, FormControlLabel, Checkbox, Grid, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import {ThemeProvider} from '@material-ui/core/styles';
-import {dvTheme} from "../constants/theme";
+import { ThemeProvider } from '@material-ui/core/styles';
+import { dvTheme } from "../constants/theme";
 import axios from 'axios';
-import { useHistory } from "react-router-dom";
-import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
+import { useHistory, Link } from "react-router-dom";
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import CheckCircleOutlineSharpIcon from '@material-ui/icons/CheckCircleOutlineSharp';
 
 const theme = dvTheme;
 const useStyles = makeStyles(theme => ({
@@ -40,45 +41,54 @@ const useStyles = makeStyles(theme => ({
         color: '#444444',
         fontSize: '0.8rem',
     },
-    infoWrap:{
+    infoWrap: {
         padding: '8%',
-        '& hr':{
+        '& hr': {
             width: '70%',
-            textAlign:'left'
+            textAlign: 'left'
         },
-        '& p':{
-            height:'auto',
-            fontSize:'0.8em',
-            color:'#444',
-            lineHeight:'23px'
+        '& p': {
+            height: 'auto',
+            fontSize: '0.8em',
+            color: '#444',
+            lineHeight: '23px'
         }
     },
-    info:{
+    info: {
         margin: '2% auto 4% auto',
+    },
+    checkMark: {
+        margin: "30px auto",
+        fontSize: "60px",
+        
     }
 }));
-export default function Register(){
+export default function Register() {
     let history = useHistory();
-    const [user, setUsers] = useState<any>({email: "", firstName: "", lastName: "", password: "", repeatPassword: ""});
+    const [user, setUsers] = useState<any>({ email: "", firstName: "", lastName: "", password: "", repeatPassword: "" });
     const [registerFailed, setRegisterFailed] = useState('');
+     // show comfirm dialog
+    const [open, setOpen] = React.useState(false);
     const classes = useStyles();
     const handleChange = (e: any) => {
         // @ts-ignore
-        setUsers({...user,[e.target.name]: e.target.value});
+        setUsers({ ...user, [e.target.name]: e.target.value });
         setRegisterFailed("");
     }
     const onSubmit = (e: any) => {
         e.preventDefault();
         axios.post('/customer/add', user)
-        .then((response) => {
-            alert("Success");
-            history.push('/signIn');
-        }, (error) => {
-            console.log(error);
-            setRegisterFailed('This email address exists.')
-        });
+            .then((response) => {
+                setOpen(true);
+                // history.push('/signIn');
+            }, (error) => {
+                console.log(error);
+                setRegisterFailed('This email address exists.')
+            });
     }
-    useEffect(() =>{
+
+    //add repeat password match function
+    useEffect(() => {
         // custom rule will have name 'isPasswordMatch'
         ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
             if (value !== user.password) {
@@ -87,7 +97,8 @@ export default function Register(){
             return true;
         });
     })
-    
+   
+
     return (
         <>
             <Container component="main" className={classes.main} maxWidth='md'>
@@ -96,7 +107,7 @@ export default function Register(){
                         <Grid item xs={6} className={classes.register}>
                             {/* <form className={classes.form} id='UserFrom' onSubmit={onSubmit} > */}
                             <ValidatorForm onSubmit={onSubmit} onError={errors => console.log(errors)} className={classes.form} id='UserFrom'>
-                            <Typography variant="subtitle1" color="error" >{registerFailed}</Typography>
+                                <Typography variant="subtitle1" color="error" >{registerFailed}</Typography>
                                 <Grid container spacing={4}>
                                     <Grid item xs={12} sm={6}>
                                         <TextValidator
@@ -148,7 +159,7 @@ export default function Register(){
                                                 shrink: true,
                                             }}
                                             value={user.email}
-                                            onChange={e => setUsers({...user, email: e.target.value })}
+                                            onChange={e => setUsers({ ...user, email: e.target.value })}
                                             validators={['required', 'isEmail']}
                                             errorMessages={['this field is required', 'Email is not valid']}
                                         />
@@ -193,7 +204,7 @@ export default function Register(){
                                     </Grid>
                                     <Grid item xs={12}>
                                         <FormControlLabel
-                                            control={<Checkbox value="allowExtraEmails" color="primary"/>}
+                                            control={<Checkbox value="allowExtraEmails" color="primary" />}
                                             label="Yes, I'd like to be the first to know about DVBank rates,news, and update. I can unsubscribe at any time"
                                         />
                                     </Grid>
@@ -215,7 +226,7 @@ export default function Register(){
                                 <Typography variant="subtitle1" className={classes.typography}>
                                     Ready for better banking?
                                 </Typography>
-                                <Divider/>
+                                <Divider />
                                 <p>
                                     It is a long established fact that a reader will be distracted by the readable
                                     content of a page when looking at its layout. The point of using Lorem Ipsum is that
@@ -237,6 +248,27 @@ export default function Register(){
                     </Grid>
                 </ThemeProvider>
             </Container>
+            <Dialog
+                open={open}
+                // onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <CheckCircleOutlineSharpIcon fontSize="large" color="secondary" className={classes.checkMark}/>
+                <DialogTitle id="alert-dialog-title" >{"Thank you for your registration"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        You have been sucessfully registered. Please sign in with your email.
+                    </DialogContentText>
+   
+                </DialogContent>
+                <DialogActions >
+                    <Link to="/signin"><Button variant="contained" color="secondary">
+                        Sign in
+                    </Button></Link>
+                    
+                </DialogActions>
+            </Dialog>
         </>
     );
 }
