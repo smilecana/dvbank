@@ -3,11 +3,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from "@material-ui/core/Grid";
 import { ThemeProvider } from '@material-ui/core/styles';
 import {useState} from 'react';
-import { CssBaseline, Container, Typography, TextField, Button,  Divider } from '@material-ui/core';
+import { CssBaseline, Container, Typography,  Button,  Divider } from '@material-ui/core';
 import { login, setCustomer } from './authActions';
 import {dvTheme} from "../constants/theme";
 import axios from "axios";
 import { Link } from 'react-router-dom';
+import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 
 
 const theme = dvTheme;
@@ -50,6 +51,8 @@ export default function Login() {
     //set state in hook function
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loginFailed, setLoginFailed] = useState("");
+    const classes = useStyles();
 
     const handleSubmit = (e:any) => {
         e.preventDefault();
@@ -60,12 +63,14 @@ export default function Login() {
                 setCustomer(response.data);
                 window.location.href='/accounts/summary';
             }, (error) => {
+                setLoginFailed("User name or password you entered is incorrect.")
                 console.log(error);
-            });
+        });
     }
-        const classes = useStyles();
+    
         return (
             <ThemeProvider theme={theme} >
+                
                 <Container className={classes.main} component="main" maxWidth="md" >
                     <CssBaseline />
                     <Grid container spacing={4}>
@@ -74,32 +79,38 @@ export default function Login() {
                                 <Typography component="h3" variant="h5" className={classes.title}>
                                     Sign in to Online Banking
                                 </Typography>
-                                <form className={classes.form} noValidate onSubmit={handleSubmit}>
-                                    <TextField
+                                {/* <form className={classes.form} noValidate onSubmit={handleSubmit}> */}
+                                <ValidatorForm onSubmit={handleSubmit} onError={errors => console.log(errors)}>
+
+                                    <TextValidator
                                         variant="outlined"
                                         margin="normal"
-                                        required
+                                        // required
                                         fullWidth
                                         id="email"
                                         label="Online ID"
                                         name="email"
                                         autoComplete="email"
                                         value={email}
-                                        onChange={e => setEmail(e.target.value)}
+                                        onChange={e => {setEmail(e.target.value);setLoginFailed('')}}
                                         autoFocus
+                                        validators={['required', 'isEmail']}
+                                        errorMessages={['This field is required', 'Email is not valid']}
                                     />
-                                    <TextField
+                                    <TextValidator
                                         variant="outlined"
                                         margin="normal"
-                                        required
+                                        // required
                                         fullWidth
                                         name="password"
                                         label="Password"
                                         type="password"
                                         id="password"
                                         value={password}
-                                        onChange={e => setPassword(e.target.value)}
+                                        onChange={e => {setPassword(e.target.value);setLoginFailed('')}}
                                         autoComplete="current-password"
+                                        validators={['required']}
+                                        errorMessages={['This field is required']}
                                     />
 
                                     <Grid container>
@@ -107,7 +118,10 @@ export default function Login() {
                                             <Typography variant="body2" color="primary" className={classes.title}>
                                                 Forgot password?
                                             </Typography>
-                                                
+                                            
+                                            <Typography variant="subtitle1" color="error" >
+                                                {loginFailed}
+                                            </Typography>
                                         </Grid>
 
                                     </Grid>
@@ -122,8 +136,8 @@ export default function Login() {
                                     >
                                         Sign In
                                     </Button>
-
-                                </form>
+                                </ValidatorForm>
+                                {/* </form> */}
                             </div>
                         </Grid>
                         <Grid item xs={6} >
@@ -162,6 +176,7 @@ export default function Login() {
                         </Grid>
                     </Grid>
                 </Container>
+                
             </ThemeProvider>
     );
 }

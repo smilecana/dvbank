@@ -1,12 +1,13 @@
-import React, {useState } from 'react';
+import React, {useState, useEffect } from 'react';
 import {Divider} from '@material-ui/core';
-import { TextField, Button , FormControlLabel, Checkbox, Grid, Typography} from '@material-ui/core';
+import { Button , FormControlLabel, Checkbox, Grid, Typography} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {ThemeProvider} from '@material-ui/core/styles';
 import {dvTheme} from "../constants/theme";
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
+import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 
 const theme = dvTheme;
 const useStyles = makeStyles(theme => ({
@@ -58,36 +59,50 @@ const useStyles = makeStyles(theme => ({
 }));
 export default function Register(){
     let history = useHistory();
-    const [user, setUsers] = useState<any>({email: "", firstName: "", lastName: "", password: ""});
+    const [user, setUsers] = useState<any>({email: "", firstName: "", lastName: "", password: "", repeatPassword: ""});
+    const [registerFailed, setRegisterFailed] = useState('');
     const classes = useStyles();
     const handleChange = (e: any) => {
         // @ts-ignore
         setUsers({...user,[e.target.name]: e.target.value});
+        setRegisterFailed("");
     }
     const onSubmit = (e: any) => {
         e.preventDefault();
-        axios.post('/customer/addCustomer', user)
+        axios.post('/customer/add', user)
         .then((response) => {
             alert("Success");
             history.push('/signIn');
         }, (error) => {
             console.log(error);
+            setRegisterFailed('This email address exists.')
         });
     }
+    useEffect(() =>{
+        // custom rule will have name 'isPasswordMatch'
+        ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
+            if (value !== user.password) {
+                return false;
+            }
+            return true;
+        });
+    })
+    
     return (
         <>
             <Container component="main" className={classes.main} maxWidth='md'>
                 <ThemeProvider theme={theme}>
                     <Grid container spacing={1}>
                         <Grid item xs={6} className={classes.register}>
-                            <form className={classes.form} id='UserFrom' onSubmit={onSubmit} >
+                            {/* <form className={classes.form} id='UserFrom' onSubmit={onSubmit} > */}
+                            <ValidatorForm onSubmit={onSubmit} onError={errors => console.log(errors)} className={classes.form} id='UserFrom'>
+                            <Typography variant="subtitle1" color="error" >{registerFailed}</Typography>
                                 <Grid container spacing={4}>
                                     <Grid item xs={12} sm={6}>
-                                        <TextField
+                                        <TextValidator
                                             variant="outlined"
                                             autoComplete="fname"
                                             name="firstName"
-                                            required
                                             fullWidth
                                             id="firstName"
                                             label="First Name"
@@ -96,13 +111,15 @@ export default function Register(){
                                             InputLabelProps={{
                                                 shrink: true,
                                             }}
+                                            value={user.firstName}
                                             onChange={handleChange}
+                                            validators={['required']}
+                                            errorMessages={['This field is required']}
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
-                                        <TextField
+                                        <TextValidator
                                             variant="outlined"
-                                            required
                                             fullWidth
                                             size="small"
                                             id="lastName"
@@ -112,13 +129,15 @@ export default function Register(){
                                             InputLabelProps={{
                                                 shrink: true,
                                             }}
+                                            value={user.lastName}
                                             onChange={handleChange}
+                                            validators={['required']}
+                                            errorMessages={['This field is required']}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <TextField
+                                        <TextValidator
                                             variant="outlined"
-                                            required
                                             fullWidth
                                             size="small"
                                             id="email"
@@ -128,13 +147,15 @@ export default function Register(){
                                             InputLabelProps={{
                                                 shrink: true,
                                             }}
+                                            value={user.email}
                                             onChange={e => setUsers({...user, email: e.target.value })}
+                                            validators={['required', 'isEmail']}
+                                            errorMessages={['this field is required', 'Email is not valid']}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <TextField
+                                        <TextValidator
                                             variant="outlined"
-                                            required
                                             fullWidth
                                             size="small"
                                             name="password"
@@ -145,16 +166,18 @@ export default function Register(){
                                             InputLabelProps={{
                                                 shrink: true,
                                             }}
+                                            value={user.password}
                                             onChange={handleChange}
+                                            validators={['required']}
+                                            errorMessages={['This field is required']}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <TextField
+                                        <TextValidator
                                             variant="outlined"
-                                            required
                                             fullWidth
                                             size="small"
-                                            name="confirm_password"
+                                            name="repeatPassword"
                                             label="Confirm Password"
                                             type="password"
                                             id="password"
@@ -162,7 +185,10 @@ export default function Register(){
                                             InputLabelProps={{
                                                 shrink: true,
                                             }}
-
+                                            value={user.repeatPassword}
+                                            onChange={handleChange}
+                                            validators={['isPasswordMatch', 'required']}
+                                            errorMessages={['Password mismatch', 'This field is required']}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -181,7 +207,8 @@ export default function Register(){
                                 >
                                     Get Started
                                 </Button>
-                            </form>
+                            </ValidatorForm>
+                            {/* </form> */}
                         </Grid>
                         <Grid item xs={6}>
                             <div className={classes.infoWrap}>

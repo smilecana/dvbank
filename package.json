@@ -22,6 +22,7 @@
     "normalize.css": "^8.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-material-ui-form-validator": "^2.0.10",
     "react-redux": "^7.1.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
