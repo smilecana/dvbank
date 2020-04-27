@@ -64,7 +64,6 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 export default function Register() {
-    let history = useHistory();
     const [user, setUsers] = useState<any>({ email: "", firstName: "", lastName: "", password: "", repeatPassword: "" });
     const [registerFailed, setRegisterFailed] = useState('');
      // show comfirm dialog
@@ -80,6 +79,10 @@ export default function Register() {
         axios.post('/customer/add', user)
             .then((response) => {
                 setOpen(true);
+                if(response.data ==='Email address already exists in database'){
+                    setOpen(false);
+                    setRegisterFailed('This email address exists.')
+                }
                 // history.push('/signIn');
             }, (error) => {
                 console.log(error);

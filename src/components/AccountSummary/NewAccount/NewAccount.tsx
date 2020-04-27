@@ -121,13 +121,13 @@ function HorizontalLabelPositionBelowStepper() {
     };
 
     const openAccount = () => {
-        const  number = (Math.floor(Math.random() * 1000) + 1000).toString();
-        account['number'] = number;
-        axios.post(`/account/${customer['id']}/addAccount`, account)
+        axios.post(`/account/${customer['id']}/${account['type']}/add`, account)
         .then((response) => {
-            alert('Your account is opend!');
-            setCustomer(response.data);
-            window.location.reload();
+            axios.get(`/customer/getByID/${customer['id']}`)
+                .then(response => {
+                    setCustomer(response.data);
+                    window.location.reload();
+                });
         }, (error) => {
             console.log(error);
         });

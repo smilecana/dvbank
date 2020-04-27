@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react';
-import {makeStyles, createMuiTheme, ThemeProvider, Theme, createStyles} from '@material-ui/core/styles';
+import React, {useEffect} from 'react';
+import {makeStyles, ThemeProvider} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import {Typography, Button, Divider, Container, Toolbar} from '@material-ui/core';
+import {Container, Typography, createStyles} from '@material-ui/core';
 import {useProtectedPath} from "../useProtectedPath";
 import {Redirect} from "react-router";
 import {dvTheme} from "../../constants/theme";
@@ -14,7 +14,7 @@ import {store} from '../store';
 import {useStore} from 'react-stores';
 import {filterAccounts} from "../common";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(theme => createStyles({
     nested: {
         padding: theme.spacing(4),
         paddingBottom: '2%',

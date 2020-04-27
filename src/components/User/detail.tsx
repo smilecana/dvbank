@@ -14,12 +14,13 @@ const theme = dvTheme;
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            marginTop: '5%',
             padding: theme.spacing(4),
             paddingBottom: '2%',
             backgroundColor: '#ffffff',
             borderRadius: '5px',
             border: '1px solid #eeeeee',
+            marginLeft: theme.spacing(35),
+            marginTop: '-1%'
         },
         title: {
             marginTop: theme.spacing(4),
@@ -43,18 +44,18 @@ const Detail = () => {
     const classes = useStyles();
     const [user, setUsers] = useState<any>({});
     const customer = useStore(store).customer;
-    const handleChange = (e: any) => {
-        // @ts-ignore
-        setUsers({...customer,[e.target.name]: e.target.value});
-    }
     useEffect(() => {
         setUsers(customer);
     }, []);
+    const handleChange = (e: any) => {
+        // @ts-ignore
+        setUsers({...user,[e.target.name]: e.target.value});
+    }
     const onSubmit = (e: any) => {
         e.preventDefault();
-        axios.put(`/customer/${customer['id']}`, user)
+        axios.put(`/customer/${customer['id']}/update`, user)
             .then((response) => {
-                setCustomer(response.data);
+                setCustomer(user);
                 alert('Saved!');
             }, (error) => {
                 console.log(error);

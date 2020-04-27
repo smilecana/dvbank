@@ -14,7 +14,6 @@ import { dvTheme } from "../../constants/theme";
 import { store } from '../store';
 import { useStore } from 'react-stores';
 import { Link } from 'react-router-dom';
-import { FormatAlignCenter } from '@material-ui/icons';
 
 
 const useStyles = makeStyles(theme => ({
@@ -107,8 +106,7 @@ export default function AccountDetail() {
 
     return (
         <React.Fragment>
-            <div className={classes.root}>
-                <Container maxWidth="lg" >
+                <Container maxWidth="lg" className={classes.root}>
                     <ThemeProvider theme={theme} >
                         <FormControl variant="outlined" className={classes.formControl}>
                             <InputLabel ref={inputLabel} id="demo-simple-select-outlined-label">
@@ -216,7 +214,6 @@ export default function AccountDetail() {
 
                     </ThemeProvider>
                 </Container>
-            </div>
         </React.Fragment>
     )
 }
