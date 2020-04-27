@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { Typography, Container, TablePagination, Grid, Tooltip, Button, TextField, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
+import { Typography, Container, Button, TextField, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, InputLabel } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -13,12 +13,11 @@ import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
 import { useStore } from 'react-stores';
 import { store } from '../store';
+import axios from "axios";
+import { setCustomer } from '../authActions';
+import CheckCircleOutlineSharpIcon from '@material-ui/icons/CheckCircleOutlineSharp';
 
 
-
-function preventDefault(event: { preventDefault: () => void; }) {
-    event.preventDefault();
-};
 
 const useStyles = makeStyles(theme => ({
     Title: {
@@ -73,15 +72,25 @@ export default function BillPayment() {
 
     const classes = useStyles();
 
-    //account data
+    //account data since login
     var customerAccounts = useStore(store).customer['accounts'];
-
+    // set the input data
     const [values, setValues] = React.useState({
         amount: '',
-        payFromIndex: 'select',
+        payFromAccountId: customerAccounts[0]['id'],
         paymentDate: '',
-        accountId: useStore(store).customer['id'],
+        customerId: useStore(store).customer['id'],
+        sucessMesg:''
     });
+    // select bar account Id only credit card
+    const [account, setAccount] = React.useState(customerAccounts[2]['id']);
+
+    const inputLabel = React.useRef<HTMLLabelElement>(null);
+    const [labelWidth, setLabelWidth] = React.useState(0);
+    React.useEffect(() => {
+        setLabelWidth(inputLabel.current!.offsetWidth);
+    }, []);
+
     // show comfirm dialog
     const [open, setOpen] = React.useState(false);
 
@@ -89,31 +98,50 @@ export default function BillPayment() {
         const value = evt.target.value;
         setValues({
             ...values,
-            [evt.target.name]: value
+            [evt.target.name]: value,
+            sucessMesg:''
         });
+       
     }
+    // next click
+    let handleClick = ()=>{ setOpen(true); }  
+    //cancel click in dialog panel
+    const handleClose = () => { setOpen(false); };
 
-    let handleClick = ()=>{
-        setOpen(true);
-        console.log(values)
-    }  
-
-    const handleClose = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
         setOpen(false);
-    };
-    const handleSubmit = () => {
-        setOpen(false);
+        axios.post(`/transaction/${values.customerId}/${account}/add`, 
+                    {source:`Internet Banking - ${customerAccounts.filter(item=>item['id']===values.payFromAccountId)[0]['number']}`, amount:values.amount, type: 'Payment'})
+            .then((response) => {
+                console.log(response.data)
+                axios.post(`/transaction/${values.customerId}/${values.payFromAccountId}/add`, 
+                    {source:`Internet Banking - ${customerAccounts.filter(item=>item['id']===account)[0]['number']}`, amount:values.amount, type: 'Withdraw'})
+                .then((response) => {
+                    console.log(response.data)
+                    axios.get(`/customer/getByID/${values.customerId}`)
+                    .then(response => {
+                        setCustomer(response.data);
+                        // window.location.reload();
+                        setValues({...values,sucessMesg:"You have completed the credit payment. "})
+                    });
+                
+                    }, (error) => {
+                    
+                });
+                
+            }, (error) => {
+               
+        });
+        
+       
     };
     // account info by id
-    let getAccountInfo = (index) =>{
-        if(index === 'select') {
-            return ''
-        }
-        else{
-            return customerAccounts[index]['type'] +'-'+ customerAccounts[index]['number'] +' $'+ customerAccounts[index]['balance'];
-        }
+    let getAccountInfo = (id) =>{
+        let accountInfo = customerAccounts.filter(item => item['id'] === id);
+        return accountInfo[0]['type'] +'-'+ accountInfo[0]['number'] +' $'+ accountInfo[0]['balance'];
+        
     }
-
 
     return (
         <React.Fragment>
@@ -121,7 +149,36 @@ export default function BillPayment() {
             <div className={classes.root}>
                 <Container maxWidth="lg" >
                     <ThemeProvider theme={theme} >
+                        <FormControl variant="outlined" className={classes.formControl}>
+                            <InputLabel ref={inputLabel} id="demo-simple-select-outlined-label">
+                                Select your credit account
+                            </InputLabel>
+                            <Select
+                                labelId="demo-simple-select-outlined-label"
+                                id="demo-simple-select-outlined"
+                                value={account}
+                                onChange={(e) => setAccount(e.target.value)}
+                                labelWidth={labelWidth}
+                            >
+                                {customerAccounts
+                                .filter(item => item['type'] === 'credit')
+                                .map((item) => {
+                                    return (<MenuItem value={item["id"]}>
+                                        {item['type']}-({item['number']}) ${item['balance']}
+                                    </MenuItem>)
+                                })}
 
+                            </Select>
+                        </FormControl>
+                        
+                                {(values.sucessMesg==='')?'':(
+                                    <Typography variant="h6" color="secondary">
+                                        <CheckCircleOutlineSharpIcon fontSize="inherit" color="secondary" />
+                                        {values.sucessMesg}
+                                    </Typography>
+                                    
+                                )}
+                        
                         <div>
                             <Typography component="h3" variant="h5" className={classes.Title}>
                                 Credit Bill Payment
@@ -132,8 +189,8 @@ export default function BillPayment() {
                                         <TableRow>
                                             <TableCell>Current balance:</TableCell>
                                             <TableCell style={{width: '40%'}}>
-                                                $ {customerAccounts[2]['balance']}<br></br>
-                                                Credit Card {customerAccounts[2]['number']}
+                                                $ {customerAccounts.filter(item => item['id'] === account)[0]['balance']}<br></br>
+                                                Credit Card {customerAccounts.filter(item => item['id'] === account)[0]['number']}
                                             </TableCell>
 
                                         </TableRow>
@@ -148,17 +205,17 @@ export default function BillPayment() {
                                                     <Select
                                                         labelId="demo-simple-select-outlined-label"
                                                         id="demo-simple-select-outlined"
-                                                        name="payFromIndex"
+                                                        name="payFromAccountId"
                                                         // className={classes.selector}
-                                                        value={values.payFromIndex}
+                                                        value={values.payFromAccountId}
                                                         onChange={handleChange}
                                                         // labelWidth={payFromIndex}
                                                     >
-                                                        <MenuItem value="select">Select an account</MenuItem>
+                                                        {/* <MenuItem value="select">Select an account</MenuItem> */}
                                                         {customerAccounts
                                                         .filter(item=>item['type']!=="credit")
-                                                        .map((item, index) => {
-                                                            return (<MenuItem value={index}>
+                                                        .map((item) => {
+                                                            return (<MenuItem value={item['id']}>
                                                                 {item['type']}-({item['number']}) ${item['balance']}
                                                             </MenuItem>)
                                                         })}
@@ -193,7 +250,7 @@ export default function BillPayment() {
                                                     checked={values.amount === customerAccounts[2]['balance']}
                                                     onChange={handleChange}
                                                 />
-                                                ${customerAccounts[2]['balance']} (Current Balance)
+                                                ${customerAccounts.filter(item => item['id'] === account)[0]['balance']} (Current Balance)
                                                 </label>
                                             </TableCell>
                                         </TableRow>
@@ -257,7 +314,7 @@ export default function BillPayment() {
                                         </TableRow>
                                         <TableRow>
                                             <TableCell>Pay From:</TableCell>
-                                            <TableCell align="right">{getAccountInfo(values.payFromIndex)}</TableCell>
+                                            <TableCell align="right">{getAccountInfo(values.payFromAccountId)}</TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell>Payment Amount:</TableCell>

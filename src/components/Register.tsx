@@ -102,6 +102,10 @@ export default function Register() {
             return true;
         });
 
+        // add email address exists
+        ValidatorForm.addValidationRule('isExist',(value)=> {
+            return registerFailed;
+        })
     })
    
 
@@ -165,8 +169,8 @@ export default function Register() {
                                             }}
                                             value={user.email}
                                             onChange={handleChange}
-                                            validators={['required', 'isEmail']}
-                                            errorMessages={['this field is required', 'Email is not valid']}
+                                            validators={['required', 'isEmail', 'isExist']}
+                                            errorMessages={['this field is required', 'Email is not valid', 'This email address exists.']}
                                         />
                                         <Typography variant="subtitle1" color="error" >{(!registerFailed)?"This email address exists.":""}</Typography>
 
