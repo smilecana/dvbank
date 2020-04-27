@@ -60,7 +60,6 @@ const useStyles = makeStyles(theme => ({
     checkMark: {
         margin: "30px auto",
         fontSize: "60px",
-        
     }
 }));
 export default function Register() {
@@ -69,6 +68,7 @@ export default function Register() {
      // show comfirm dialog
     const [open, setOpen] = React.useState(false);
     const classes = useStyles();
+    const history = useHistory();
     const handleChange = (e: any) => {
         // @ts-ignore
         setUsers({ ...user, [e.target.name]: e.target.value });
@@ -79,13 +79,19 @@ export default function Register() {
         e.preventDefault();
         axios.post('/customer/add', user)
             .then((response) => {
-                setOpen(true);
+                
                 if(response.data ==='Email address already exists in database'){
                     setOpen(false);
                     setRegisterFailed(false)
                     console.log(response.data)
+                } else{
+                    setOpen(true);
+                    setTimeout(() => {
+                        history.push('/signIn');
+                      }, 2000);
                 }
-                // history.push('/signIn');
+               
+                // 
             }, (error) => {
                 console.log(error);
                 // setRegisterFailed(false)
@@ -264,7 +270,7 @@ export default function Register() {
                 // onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
-            >
+            >  
                 <CheckCircleOutlineSharpIcon fontSize="large" color="secondary" className={classes.checkMark}/>
                 <DialogTitle id="alert-dialog-title" >{"Thank you for your registration"}</DialogTitle>
                 <DialogContent>
