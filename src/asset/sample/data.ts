@@ -44,11 +44,7 @@ export default {
                     "title": "Transfer",
                     "link": "/transfer"
                 },
-                {
-                    "id": 2,
-                    "title": "Transfers History",
-                    "link": "/transfers-history"
-                }
+                
             ]
         },
         {

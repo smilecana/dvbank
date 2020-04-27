@@ -38,11 +38,7 @@ export default {
                     "key": "TRANSFER_SUMMARY",
 
                 },
-                {
-                    "title": "Transfers History",
-                    "path": "/transfer/transfers-history",
-                    "key": "TRANSFER_HISTORY",
-                }
+                
             ]
         },
         {

@@ -65,14 +65,15 @@ const useStyles = makeStyles(theme => ({
 }));
 export default function Register() {
     const [user, setUsers] = useState<any>({ email: "", firstName: "", lastName: "", password: "", repeatPassword: "" });
-    const [registerFailed, setRegisterFailed] = useState('');
+    const [registerFailed, setRegisterFailed] = useState(true);
      // show comfirm dialog
     const [open, setOpen] = React.useState(false);
     const classes = useStyles();
     const handleChange = (e: any) => {
         // @ts-ignore
         setUsers({ ...user, [e.target.name]: e.target.value });
-        setRegisterFailed("");
+        setRegisterFailed(true);
+        console.log(registerFailed)
     }
     const onSubmit = (e: any) => {
         e.preventDefault();
@@ -81,12 +82,13 @@ export default function Register() {
                 setOpen(true);
                 if(response.data ==='Email address already exists in database'){
                     setOpen(false);
-                    setRegisterFailed('This email address exists.')
+                    setRegisterFailed(false)
+                    console.log(response.data)
                 }
                 // history.push('/signIn');
             }, (error) => {
                 console.log(error);
-                setRegisterFailed('This email address exists.')
+                // setRegisterFailed(false)
             });
     }
 
@@ -99,6 +101,7 @@ export default function Register() {
             }
             return true;
         });
+
     })
    
 
@@ -110,7 +113,6 @@ export default function Register() {
                         <Grid item xs={6} className={classes.register}>
                             {/* <form className={classes.form} id='UserFrom' onSubmit={onSubmit} > */}
                             <ValidatorForm onSubmit={onSubmit} onError={errors => console.log(errors)} className={classes.form} id='UserFrom'>
-                                <Typography variant="subtitle1" color="error" >{registerFailed}</Typography>
                                 <Grid container spacing={4}>
                                     <Grid item xs={12} sm={6}>
                                         <TextValidator
@@ -162,10 +164,12 @@ export default function Register() {
                                                 shrink: true,
                                             }}
                                             value={user.email}
-                                            onChange={e => setUsers({ ...user, email: e.target.value })}
+                                            onChange={handleChange}
                                             validators={['required', 'isEmail']}
                                             errorMessages={['this field is required', 'Email is not valid']}
                                         />
+                                        <Typography variant="subtitle1" color="error" >{(!registerFailed)?"This email address exists.":""}</Typography>
+
                                     </Grid>
                                     <Grid item xs={12}>
                                         <TextValidator
