@@ -1,13 +1,6 @@
 export default {
     menus: [
         {
-            "title": "Home",
-            "path": "/home",
-            "icon": "home",
-            "key": "APP",
-            "items": []
-        },
-        {
             "title": "Accounts",
             "path": "/accounts/summary",
             "icon": "account_balance",
@@ -27,14 +20,14 @@ export default {
             ]
         },
         {
-            "title": "Transfer",
+            "title": "Transfers",
             "path": "/transfer",
             "icon": "payment",
             "key": "TRANSFER",
             "items": [
                 {
-                    "title": "Transfer",
-                    "path": "/transfer/summary",
+                    "title": "Between My Accounts",
+                    "path": "/transfer/myaccount",
                     "key": "TRANSFER_SUMMARY",
 
                 },

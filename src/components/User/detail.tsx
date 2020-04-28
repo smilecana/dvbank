@@ -2,13 +2,15 @@ import React, {useEffect, useState} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import {Button, Container, FormControl, FormHelperText, InputLabel, MenuItem, Select} from "@material-ui/core";
+import {Button, Container} from "@material-ui/core";
 import {createStyles, makeStyles, Theme, ThemeProvider} from "@material-ui/core/styles";
 import {dvTheme} from "../../constants/theme";
 import {useStore} from "react-stores";
 import {store} from '../store';
 import axios from "axios";
 import {setCustomer} from "../authActions";
+
+
 
 const theme = dvTheme;
 const useStyles = makeStyles((theme: Theme) =>
@@ -19,11 +21,9 @@ const useStyles = makeStyles((theme: Theme) =>
             backgroundColor: '#ffffff',
             borderRadius: '5px',
             border: '1px solid #eeeeee',
-            marginLeft: theme.spacing(35),
-            marginTop: '-1%'
+            marginTop: '1%'
         },
         title: {
-            marginTop: theme.spacing(4),
             marginBottom: theme.spacing(2),
             borderLeft: "3px solid green",
             paddingLeft: "10px"
@@ -36,6 +36,10 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         btn: {
             marginBottom: '16px'
+        },
+        button: {
+            margin: theme.spacing(1),
+            backgroundColor: '#1bb14c'
         },
     }),
 
@@ -68,9 +72,6 @@ const Detail = () => {
                     Personal Information
                 </Typography>
                 <form id='UserFrom' onSubmit={onSubmit}>
-                    <Button variant="outlined" color="primary"  type="submit" className={classes.btn}>
-                        Save
-                    </Button>
                     <Grid container spacing={3}>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -147,6 +148,11 @@ const Detail = () => {
                                 value={user['province']}
                                 onChange={handleChange}
                             />
+                        </Grid>
+                        <Grid item xs={12}  sm={6}>
+                            <Button variant="outlined" color="primary"  type="submit" className={classes.btn}>
+                                Save
+                            </Button>
                         </Grid>
                     </Grid>
                 </form>

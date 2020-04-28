@@ -21,14 +21,14 @@ const useStyles = makeStyles(theme => createStyles({
         backgroundColor: '#ffffff',
         borderRadius: '5px',
         border: '1px solid #eeeeee',
-        marginLeft: theme.spacing(35),
-        width: '75%'
+        width: '75%',
+        marginTop: '1%'
     },
     Title: {
-        marginTop: theme.spacing(4),
         marginBottom: theme.spacing(2),
         borderLeft: "3px solid green",
-        paddingLeft: "10px"
+        paddingLeft: "10px",
+        marginTop: "10px"
     },
     Pointer: {
         cursor: "pointer",

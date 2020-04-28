@@ -18,10 +18,10 @@ import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
     Title: {
-        marginTop: theme.spacing(4),
         marginBottom: theme.spacing(2),
         borderLeft: "3px solid green",
-        paddingLeft: "10px"
+        paddingLeft: "10px",
+        marginTop: "10px"
     },
     Pointer: {
         cursor: "pointer",
@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: '#ffffff',
         borderRadius: '5px',
         border: '1px solid #eeeeee',
-        marginLeft: theme.spacing(35),
+        marginTop:'1%'
     },
     container: {
         maxHeight: 440,
@@ -101,7 +101,6 @@ export default function AccountDetail() {
 
     const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         setAccount(event.target.value as string);
-        // console.log(Object.keys(customerAccounts[account]));
     };
 
     return (
@@ -167,9 +166,6 @@ export default function AccountDetail() {
                                             <Button  variant="contained" color="primary">Bill Payment</Button>
                                         </Link>
                             ):''}
-
- 
-
                         <div>
                             <Typography component="h3" variant="h5" className={classes.Title}>
                                 Transaction History

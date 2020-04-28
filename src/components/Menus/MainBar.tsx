@@ -1,6 +1,6 @@
 import React from "react";
 import AppBar from '@material-ui/core/AppBar';
-import { Container, Toolbar, Typography, Button, Menu, MenuItem } from "@material-ui/core";
+import {Container, Toolbar, Typography, Button, Menu, MenuItem, IconButton} from "@material-ui/core";
 import {
     Link,
 } from "react-router-dom";
@@ -10,6 +10,8 @@ import {logout} from "../authActions";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import logo from "../../asset/img/logo.png";
+import MenuIcon from '@material-ui/icons/Menu';
+import clsx from 'clsx';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -32,16 +34,21 @@ const useStyles = makeStyles((theme: Theme) =>
             marginLeft: 'auto'
         },
         img: {
-            width: "20%",
+            width: "160px",
             // marginTop: "20px",
             // marginBottom: "20px",
             marginRight: "20px",
             cursor: "pointer"
-        }
+        },
+        menuButton: {
+            marginRight: 36,
+        },
+        hide: {
+            display: 'none',
+        },
     }),
 );
-
-export const MainBar: React.FC = () => {
+export default function MainBar(props: any){
     const classes = useStyles();
     const authStoreState = useStore(store);
     const history = useHistory();
@@ -59,14 +66,23 @@ export const MainBar: React.FC = () => {
     return (
         
             <AppBar className={classes.root}>
-                <Container maxWidth={'lg'}>
+                <Container maxWidth={false}>
                     <Toolbar>
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            onClick={props.drawerOpen}
+                            edge="start"
+                            className={clsx(classes.menuButton, {
+                                [classes.hide]: props.action,
+                            })}
+                        >
+                            <MenuIcon />
+                        </IconButton>
                         <img className={classes.img} src={logo} alt="logo" onClick={()=> window.location.href='/home'} />
-                        
                         {(!authStoreState.authorized) ?
                             (
                                 <>
-
                                     <Typography variant="h6" align="left">
                                         <Link to="/home"><Button>Home</Button></Link>
                                     </Typography>
@@ -79,6 +95,7 @@ export const MainBar: React.FC = () => {
                                     <Typography variant="h6" align="left">
                                         <Link to="/faq"><Button>FAQ</Button></Link>
                                     </Typography>
+
                                     <Typography variant="h6" align="right" className={classes.login}>
                                         <Link to="/signIn"><Button>SignIn</Button></Link>
                                     </Typography>

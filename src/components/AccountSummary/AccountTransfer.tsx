@@ -1,11 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import React, {useState, useEffect} from 'react';
+import {makeStyles, createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { Typography, Container, TablePagination, Grid, Tooltip, Button, TextField, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
+import {
+    Typography,
+    Container,
+    Button,
+    TextField,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions
+} from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -14,18 +24,22 @@ import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
 import FilledInput from '@material-ui/core/FilledInput';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import { useStore } from 'react-stores';
-import { store } from '../store';
+import {useStore} from 'react-stores';
+import {store} from '../store';
+import axios from "axios";
+import {setCustomer} from "../authActions";
 
-
-
-function preventDefault(event: { preventDefault: () => void; }) {
-    event.preventDefault();
-};
 
 const useStyles = makeStyles(theme => ({
+    root: {
+        padding: theme.spacing(4),
+        paddingBottom: '2%',
+        backgroundColor: '#ffffff',
+        borderRadius: '5px',
+        border: '1px solid #eeeeee',
+        marginTop:'1%'
+    },
     Title: {
-        marginTop: theme.spacing(4),
         marginBottom: theme.spacing(2),
         borderLeft: "3px solid green",
         paddingLeft: "10px"
@@ -46,15 +60,10 @@ const useStyles = makeStyles(theme => ({
     },
     table: {
         minWidth: 650,
+        width: '95%',
+        margin: 'auto'
     },
-    root: {
-        flexGrow: 1,
-        height: 'auto',
-        paddingTop: '3%',
-        display: 'flex',
-        flexWrap: 'wrap',
-        marginLeft: theme.spacing(35),
-    },
+
     container: {
         // maxHeight: 440,
     },
@@ -92,14 +101,16 @@ const often = ['Once', 'Every week', 'Every two weeks', 'Every month', 'Every th
 export default function AccountTransfer() {
 
     const classes = useStyles();
-
+    const customer = useStore(store).customer;
     const [values, setValues] = React.useState({
         amount: '',
         fromAccountIndex: 'select',
         toAccountIndex: 'select',
         transferDate: '',
         howOften: 'Once',
-        accountId: useStore(store).customer['id'],
+        fromAccountId:'',
+        toAccountId: '',
+        type: 'Deposit'
     });
     // show comfirm dialog
     const [open, setOpen] = React.useState(false);
@@ -111,18 +122,20 @@ export default function AccountTransfer() {
             ...values,
             [evt.target.name]: value
         });
+
     }
 
-    let handleClick = ()=>{
-        setOpen(true);
+    let handleClick = () => {
+        if (customerAccounts[values.toAccountIndex]) {
+            setOpen(true);
+        }
     }
     // account info by id
-    let getAccountInfo = (index) =>{
-        if(index === 'select') {
+    let getAccountInfo = (index) => {
+        if (index === 'select') {
             return ''
-        }
-        else{
-            return customerAccounts[index]['type'] +'-'+ customerAccounts[index]['number'] +' $'+ customerAccounts[index]['balance'];
+        } else {
+            return customerAccounts[index]['type'] + '-' + customerAccounts[index]['number'] + ' $' + customerAccounts[index]['balance'];
         }
     }
 
@@ -134,46 +147,51 @@ export default function AccountTransfer() {
     const [labelWidth, setLabelWidth] = React.useState(0);
     React.useEffect(() => {
         // setLabelWidth(inputLabel.current!.offsetWidth);
+
     }, []);
 
-    
 
     const handleClose = () => {
         setOpen(false);
     };
     const handleSubmit = () => {
+        console.log(values);
+        axios.post(`/account/${customer['id']}/${customerAccounts[values.fromAccountIndex]['id']}/${customerAccounts[values.toAccountIndex]['id']}/${values['amount']}/transfer`, values)
+            .then((response) => {
+                if(response.data === 'Success'){
+                    alert(response.data);
+                    axios.get(`/customer/getByID/${customer['id']}`)
+                        .then(response => {
+                            setCustomer(response.data);
+                        });
+                }
+            }, (error) => {
+                console.log(error);
+            });
         setOpen(false);
     };
-
-
     return (
         <React.Fragment>
-            
-            <div className={classes.root}>
-                <Container maxWidth="lg" >
-                    <ThemeProvider theme={theme} >
-
-                        <div>
-                            <Typography component="h3" variant="h5" className={classes.Title}>
-                                Set up transfer details
-                            </Typography>
-                            <TableContainer component={Paper}>
+            <div>
+                <Container maxWidth="lg" className={classes.root}>
+                    <ThemeProvider theme={theme}>
+                            <TableContainer>
+                                <Typography component="h3" variant="h5" className={classes.Title}>
+                                    Between My Accounts
+                                </Typography>
                                 <Table className={classes.table} aria-label="simple table">
                                     <TableBody>
                                         <TableRow>
                                             <TableCell>From:</TableCell>
                                             <TableCell style={{width: '40%'}}>
                                                 <FormControl variant="outlined" className={classes.formControl}>
-
                                                     <Select
                                                         labelId="demo-simple-select-outlined-label"
                                                         id="demo-simple-select-outlined"
                                                         name="fromAccountIndex"
-                                                        // className={classes.selector}
                                                         value={values.fromAccountIndex}
                                                         onChange={handleChange}
                                                         labelWidth={labelWidth}
-
                                                     >
                                                         <MenuItem value="select">Select an account</MenuItem>
                                                         {customerAccounts.map((item, index) => {
@@ -187,11 +205,11 @@ export default function AccountTransfer() {
                                             </TableCell>
 
                                         </TableRow>
-                                        <TableRow >
+                                        <TableRow>
                                             <TableCell component="th" scope="row">
                                                 To:
                                             </TableCell>
-                                            <TableCell >
+                                            <TableCell>
 
                                                 <FormControl variant="outlined" className={classes.formControl}>
 
@@ -215,11 +233,11 @@ export default function AccountTransfer() {
                                                 </FormControl>
                                             </TableCell>
                                         </TableRow>
-                                        <TableRow >
+                                        <TableRow>
                                             <TableCell component="th" scope="row">
                                                 Amount:
                                             </TableCell>
-                                            <TableCell >
+                                            <TableCell>
                                                 <FormControl fullWidth className={classes.amount} variant="filled">
                                                     <InputLabel htmlFor="filled-adornment-amount">Amount</InputLabel>
                                                     <FilledInput
@@ -227,16 +245,17 @@ export default function AccountTransfer() {
                                                         name="amount"
                                                         value={values.amount}
                                                         onChange={handleChange}
-                                                        startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                                                        startAdornment={<InputAdornment
+                                                            position="start">$</InputAdornment>}
                                                     />
                                                 </FormControl>
                                             </TableCell>
                                         </TableRow>
-                                        <TableRow >
+                                        <TableRow>
                                             <TableCell component="th" scope="row">
                                                 How often:
                                             </TableCell>
-                                            <TableCell >
+                                            <TableCell>
 
                                                 <FormControl variant="outlined" className={classes.formControl}>
 
@@ -259,11 +278,11 @@ export default function AccountTransfer() {
                                                 </FormControl>
                                             </TableCell>
                                         </TableRow>
-                                        <TableRow >
+                                        <TableRow>
                                             <TableCell component="th" scope="row">
                                                 Transfer date:
                                             </TableCell>
-                                            <TableCell >
+                                            <TableCell>
                                                 <form className={classes.container} noValidate>
                                                     <TextField
                                                         id="demo-simple-select-outlined"
@@ -281,22 +300,15 @@ export default function AccountTransfer() {
 
                                             </TableCell>
                                         </TableRow>
-                                    
-
-                                        <TableRow >
-                                            <TableCell component="th" scope="row"></TableCell>
-                                            <TableCell align="right">
-                                                <Button variant="contained" color="primary" onClick={handleClick}>
-                                                    Next
-                                                </Button>
-                                            </TableCell>
-                                        </TableRow>
-
                                     </TableBody>
                                 </Table>
-                            </TableContainer>
-                        </div>
+                                <div style={{float: 'right', marginTop: '10px', marginRight:'30px'}}>
+                                    <Button variant="contained" color="primary" onClick={handleClick}>
+                                        Next
+                                    </Button>
+                                </div>
 
+                            </TableContainer>
                         {/* comfirm dialog */}
                         <div>
                             <Dialog
@@ -306,52 +318,53 @@ export default function AccountTransfer() {
                                 aria-describedby="alert-dialog-description"
                             >
                                 <DialogTitle id="alert-dialog-title">{"TRANSFERS – VERIFICATION"}</DialogTitle>
-                                
-                                <DialogContent>
-                                <DialogContentText id="alert-dialog-description">
-                                You are about to make the following transfer. Do you want to continue?
-                                </DialogContentText>
 
-                                <Table  aria-label="simple table">
-                                    <TableHead>
-                                        
-                                        <TableRow>
-                                            <TableCell>From:</TableCell>
-                                            <TableCell align="right">{getAccountInfo(values.fromAccountIndex)}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell>To:</TableCell>
-                                            <TableCell align="right">{getAccountInfo(values.toAccountIndex)}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell>Amount:</TableCell>
+                                <DialogContent>
+                                    <DialogContentText id="alert-dialog-description">
+                                        You are about to make the following transfer. Do you want to continue?
+                                    </DialogContentText>
+
+                                    <Table aria-label="simple table">
+                                        <TableHead>
+
+                                            <TableRow>
+                                                <TableCell>From:</TableCell>
+                                                <TableCell
+                                                    align="right">{getAccountInfo(values.fromAccountIndex)}</TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell>To:</TableCell>
+                                                <TableCell
+                                                    align="right">{getAccountInfo(values.toAccountIndex)}</TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell>Amount:</TableCell>
                                                 <TableCell align="right">${values.amount}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell>How often:</TableCell>
-                                            <TableCell align="right">{values.howOften}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell>Transfer Date:</TableCell>
-                                            <TableCell align="right">{values.transferDate}</TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                </Table>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell>How often:</TableCell>
+                                                <TableCell align="right">{values.howOften}</TableCell>
+                                            </TableRow>
+                                            <TableRow>
+                                                <TableCell>Transfer Date:</TableCell>
+                                                <TableCell align="right">{values.transferDate}</TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                    </Table>
                                 </DialogContent>
                                 <DialogActions>
-                                <Button onClick={handleClose} color="secondary">
-                                    Cancel
-                                </Button>
-                                <Button onClick={handleSubmit} color="primary" autoFocus>
-                                    Confirm
-                                </Button>
+                                    <Button onClick={handleClose} color="secondary">
+                                        Cancel
+                                    </Button>
+                                    <Button onClick={handleSubmit} color="primary" autoFocus>
+                                        Confirm
+                                    </Button>
                                 </DialogActions>
                             </Dialog>
-                            </div>
+                        </div>
                     </ThemeProvider>
                 </Container>
             </div>
-            
         </React.Fragment>
     )
 }

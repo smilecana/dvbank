@@ -42,14 +42,16 @@ const useStyles = makeStyles(theme => ({
         minWidth: 650,
     },
     root: {
-        flexGrow: 1,
-        height: 'auto',
-        paddingTop: '3%',
-        display: 'flex',
-        flexWrap: 'wrap',
-        marginLeft: theme.spacing(35),
+        padding: theme.spacing(4),
+        paddingBottom: '2%',
+        backgroundColor: '#ffffff',
+        borderRadius: '5px',
+        border: '1px solid #eeeeee',
+        marginTop:'1%'
     },
-    
+    container: {
+        maxHeight: 440,
+    },
 
 }));
 
@@ -125,11 +127,9 @@ export default function BillPayment() {
                         // window.location.reload();
                         setValues({...values,sucessMesg:"You have completed the credit payment. "})
                     });
-                
                     }, (error) => {
                     
                 });
-                
             }, (error) => {
                
         });
@@ -145,9 +145,8 @@ export default function BillPayment() {
 
     return (
         <React.Fragment>
-            
-            <div className={classes.root}>
-                <Container maxWidth="lg" >
+            <div>
+                <Container maxWidth="lg"  className={classes.root}>
                     <ThemeProvider theme={theme} >
                         <FormControl variant="outlined" className={classes.formControl}>
                             <InputLabel ref={inputLabel} id="demo-simple-select-outlined-label">
@@ -170,20 +169,18 @@ export default function BillPayment() {
 
                             </Select>
                         </FormControl>
-                        
-                                {(values.sucessMesg==='')?'':(
-                                    <Typography variant="h6" color="secondary">
-                                        <CheckCircleOutlineSharpIcon fontSize="inherit" color="secondary" />
-                                        {values.sucessMesg}
-                                    </Typography>
-                                    
-                                )}
-                        
+                            {(values.sucessMesg==='')?'':(
+                                <Typography variant="h6" color="secondary">
+                                    <CheckCircleOutlineSharpIcon fontSize="inherit" color="secondary" />
+                                    {values.sucessMesg}
+                                </Typography>
+
+                            )}
                         <div>
                             <Typography component="h3" variant="h5" className={classes.Title}>
                                 Credit Bill Payment
                             </Typography>
-                            <TableContainer component={Paper}>
+                            <TableContainer>
                                 <Table className={classes.table} aria-label="simple table">
                                     <TableBody>
                                         <TableRow>
