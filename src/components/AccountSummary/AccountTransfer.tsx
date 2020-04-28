@@ -141,7 +141,7 @@ export default function AccountTransfer() {
 
 
     //account data
-    var customerAccounts = useStore(store).customer['accounts'];
+    var customerAccounts = useStore(store).customer['accounts'].filter(item => item.type !== 'credit');
 
     const inputLabel = React.useRef<HTMLLabelElement>(null);
     const [labelWidth, setLabelWidth] = React.useState(0);
@@ -155,7 +155,6 @@ export default function AccountTransfer() {
         setOpen(false);
     };
     const handleSubmit = () => {
-        console.log(values);
         axios.post(`/account/${customer['id']}/${customerAccounts[values.fromAccountIndex]['id']}/${customerAccounts[values.toAccountIndex]['id']}/${values['amount']}/transfer`, values)
             .then((response) => {
                 if(response.data === 'Success'){
@@ -163,6 +162,9 @@ export default function AccountTransfer() {
                     axios.get(`/customer/getByID/${customer['id']}`)
                         .then(response => {
                             setCustomer(response.data);
+                            setValues({ ...values,
+                                amount: ''
+                            });
                         });
                 }
             }, (error) => {
